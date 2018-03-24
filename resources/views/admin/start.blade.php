@@ -124,6 +124,24 @@ $players = \App\Boxscore::where('game_id',$data->id)
         </form>
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+
+<div class="modal fade" role="dialog" id="serverModal">
+    <div class="modal-dialog modal-sm" role="document">
+        {{ csrf_field() }}
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="alert alert-warning">
+                    <span class="text-warning">
+                        <i class="fa fa-warning"></i> Opps! Connection problem! Please pause the game.
+                    </span>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+        </form>
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <script src="{{ asset('resources/assets/js/jquery.min.js') }}"></script>
 <script src="{{ asset('resources/assets/js/bootstrap.min.js') }}"></script>
 
@@ -143,6 +161,9 @@ $players = \App\Boxscore::where('game_id',$data->id)
             type: 'GET',
             success: function(data){
                 $('.score').html(data).fadeOut().fadeIn();
+            },
+            error: function(){
+                $('#serverModal').modal('show');
             }
         });
     }
@@ -164,6 +185,9 @@ $players = \App\Boxscore::where('game_id',$data->id)
             type: 'GET',
             success: function(data){
                 $('.score').html(data).fadeOut().fadeIn();
+            },
+            error: function(){
+                $('#serverModal').modal('show');
             }
         });
     }
