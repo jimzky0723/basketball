@@ -102,6 +102,10 @@
                     </ul>
                 </li>
             </ul>
+
+            <ul class="nav navbar-nav pull-right">
+                <li style="background: #67bfa4;"><a href="{{ url('/') }}" style="color:#fff !important;"><i class="fa fa-home"></i> Homepage</a></li>
+            </ul>
         </div><!--/.nav-collapse -->
         @else
 

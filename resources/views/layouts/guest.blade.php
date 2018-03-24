@@ -93,7 +93,9 @@
                 <li><a href="{{ url('players') }}">Players</a></li>
                 <li><a href="{{ url('stats') }}">Stats</a></li>
                 <li><a href="{{ url('ranking') }}">Ranking</a></li>
-                <li><a href="{{ url('admin') }}">Panel</a></li>
+            </ul>
+            <ul class="nav navbar-nav pull-right">
+                <li style="background: #67bfa4;"><a href="{{ url('/admin') }}" style="color:#fff !important;"><i class="fa fa-gear"></i> Panel</a></li>
             </ul>
         </div><!--/.nav-collapse -->
     </div>
