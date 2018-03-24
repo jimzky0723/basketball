@@ -185,7 +185,7 @@
                                     <th class="text-success">{{ $stats->pts }}<?php $total_pts = $total_pts + $stats->pts; ?></th>
                                 </tr>
                                 @endforeach
-                                <tr class="bg-aqua">
+                                <tr class="bg-gray">
                                     <th colspan="3">Last 10 Games</th>
                                     <th>{{ number_format($total_fgm/$counter,1) }}-{{ number_format($total_fga/$counter,1) }}</th>
                                     <th>{{ number_format($total_fP/$counter,1) }}%</th>

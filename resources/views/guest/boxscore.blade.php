@@ -26,7 +26,7 @@
                         ->where('team',$data->away_team)
                         ->sum('pts');
                     ?>
-                    {{ $data->home_team }} <font class="text-primary score">{{ $home_score }}</font> <font class="score">|</font>  <font class="text-primary score">{{ $away_score }}</font> {{ $data->away_team }}
+                    {{ $data->home_team }} <font class="text-primary score">{{ $home_score }}</font> <font class="score"> vs. </font>  <font class="text-primary score">{{ $away_score }}</font> {{ $data->away_team }}
                 </h3>
             </div>
             <div class="row">

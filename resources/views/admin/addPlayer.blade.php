@@ -190,6 +190,7 @@
 
                         <div role="tabpanel" class="tab-pane" id="stats">
                             <br />
+                            @if(isset($stats))
                             <div class="table-responsive">
                                 <table class="table table-stats table-striped table-hover">
                                     <caption>Career Stats</caption>
@@ -372,6 +373,7 @@
                                     @endif
                                 </table>
                             </div>
+                            @endif
                         </div>
                     </div>
                 </div>

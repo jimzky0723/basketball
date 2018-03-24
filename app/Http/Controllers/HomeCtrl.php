@@ -18,15 +18,6 @@ class HomeCtrl extends Controller
 
     public function index()
     {
-        $user = Session::get('auth');
-        if($user){
-            if($user->level=='admin'){
-                return redirect($user->level);
-            }else if($user->level=='hospital'){
-                return redirect($user->level);
-            }
-        }
-
         return view('guest.home',[
             'title' => 'DOH Basketball Club',
         ]);
