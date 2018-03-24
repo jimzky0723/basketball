@@ -7,6 +7,7 @@ use App\Games;
 use App\Players;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class PlayerCtrl extends Controller
 {
@@ -37,7 +38,6 @@ class PlayerCtrl extends Controller
     {
         $tmp = array(
             $req->fname,
-            $req->mname,
             $req->lname,
             date('Ymd',strtotime($req->dob))
         );
@@ -94,9 +94,43 @@ class PlayerCtrl extends Controller
     function edit($id)
     {
         $data = Players::find($id);
+        $stats = Boxscore::select(
+            'player_id',
+            DB::raw('count(team) as gp'),
+            DB::raw('SUM(win)/count(team) as win'),
+            DB::raw('(SUM(fg2m) + SUM(fg3m))/count(team) as fgm'),
+            DB::raw('(SUM(fg2a) + SUM(fg3a))/count(team) as fga'),
+            DB::raw('(SUM(fg2m) + SUM(fg3m))/(SUM(fg2a) + SUM(fg3a)) as fg_per'),
+            DB::raw('SUM(fg3m)/count(team) as fg3m'),
+            DB::raw('SUM(fg3a)/count(team) as fg3a'),
+            DB::raw('(SUM(fg3m))/(SUM(fg3a)) as fg3_per'),
+            DB::raw('SUM(ftm)/count(team) as ftm'),
+            DB::raw('SUM(fta)/count(team) as fta'),
+            DB::raw('(SUM(ftm))/(SUM(fta)) as ft_per'),
+            DB::raw('SUM(ast)/count(team) as ast'),
+            DB::raw('((SUM(oreb)+SUM(dreb)))/count(team) as reb'),
+            DB::raw('SUM(stl)/count(team) as stl'),
+            DB::raw('SUM(blk)/count(team) as blk'),
+            DB::raw('SUM(pf)/count(team) as pf'),
+            DB::raw('SUM(turnover)/count(team) as turnover'),
+            DB::raw('SUM(pts)/count(team) as pts')
+        )
+            ->where('player_id',$id)
+            ->first();
+
+        $game_log = Games::select('games.*','boxscore.team as myteam')
+            ->leftJoin('boxscore','boxscore.game_id','=','games.id')
+            ->where('boxscore.player_id',$id)
+            ->where('games.winner','!=','')
+            ->orderBy('date_match','desc')
+            ->limit(10)
+            ->get();
+
         return view('admin.addPlayer',[
             'title' => 'Update Player',
-            'data' => $data
+            'data' => $data,
+            'stats' => $stats,
+            'game_log' => $game_log
         ]);
     }
 
@@ -106,7 +140,6 @@ class PlayerCtrl extends Controller
 
         $tmp = array(
             $req->fname,
-            $req->mname,
             $req->lname,
             date('Ymd',strtotime($req->dob))
         );

@@ -46,62 +46,30 @@ class HomeCtrl extends Controller
     {
         $name = Players::find($player_id);
         $data = Players::find($player_id);
-        $boxscore = Boxscore::where('player_id',$player_id);
-        $total = $boxscore->leftJoin('games','games.id','=','boxscore.game_id')
-            ->where('games.winner','!=','')
-            ->count();
-        $ppg = 0;
-        $apg = 0;
-        $orebpg = 0;
-        $drebpg = 0;
-        $fg2m = 0;
-        $fg2a = 0;
-        $fg3m = 0;
-        $fg3a = 0;
-        $ftm = 0;
-        $fta = 0;
-        $bpg = 0;
-        $spg = 0;
-        $pfpg = 0;
-        $tpg = 0;
 
-        if($total>0)
-        {
-            $ppg = number_format(($boxscore->sum('pts')) / $total,1);
-            $apg = number_format(($boxscore->sum('ast')) / $total,1);
-            $orebpg = number_format(($boxscore->sum('oreb')) / $total,1);
-            $drebpg = number_format(($boxscore->sum('dreb')) / $total,1);
-            $fg2m = number_format(($boxscore->sum('fg2m')) / $total,1);
-            $fg2a = number_format(($boxscore->sum('fg2a')) / $total,1);
-            $fg3m = number_format(($boxscore->sum('fg3m')) / $total,1);
-            $fg3a = number_format(($boxscore->sum('fg3a')) / $total,1);
-            $ftm = number_format(($boxscore->sum('ftm')) / $total,1);
-            $fta = number_format(($boxscore->sum('fta')) / $total,1);
-            $bpg = number_format(($boxscore->sum('blk')) / $total,1);
-            $spg = number_format(($boxscore->sum('stl')) / $total,1);
-            $pfpg = number_format(($boxscore->sum('pf')) / $total,1);
-            $tpg = number_format(($boxscore->sum('turnover')) / $total,1);
-        }
-
-
-        $career = array(
-            'gp' => $total,
-            'ppg' => $ppg,
-            'apg' => $apg,
-            'orebpg' => $orebpg,
-            'drebpg' => $drebpg,
-            'rpg' => number_format($orebpg + $drebpg,1),
-            'fg2m' => $fg2m,
-            'fg2a' => $fg2a,
-            'fg3m' => $fg3m,
-            'fg3a' => $fg3a,
-            'ftm' => $ftm,
-            'fta' => $fta,
-            'bpg' => $bpg,
-            'spg' => $spg,
-            'pfpg' => $pfpg,
-            'tpg' => $tpg
-        );
+        $stats = Boxscore::select(
+                    'player_id',
+                    DB::raw('count(team) as gp'),
+                    DB::raw('SUM(win)/count(team) as win'),
+                    DB::raw('(SUM(fg2m) + SUM(fg3m))/count(team) as fgm'),
+                    DB::raw('(SUM(fg2a) + SUM(fg3a))/count(team) as fga'),
+                    DB::raw('(SUM(fg2m) + SUM(fg3m))/(SUM(fg2a) + SUM(fg3a)) as fg_per'),
+                    DB::raw('SUM(fg3m)/count(team) as fg3m'),
+                    DB::raw('SUM(fg3a)/count(team) as fg3a'),
+                    DB::raw('(SUM(fg3m))/(SUM(fg3a)) as fg3_per'),
+                    DB::raw('SUM(ftm)/count(team) as ftm'),
+                    DB::raw('SUM(fta)/count(team) as fta'),
+                    DB::raw('(SUM(ftm))/(SUM(fta)) as ft_per'),
+                    DB::raw('SUM(ast)/count(team) as ast'),
+                    DB::raw('((SUM(oreb)+SUM(dreb)))/count(team) as reb'),
+                    DB::raw('SUM(stl)/count(team) as stl'),
+                    DB::raw('SUM(blk)/count(team) as blk'),
+                    DB::raw('SUM(pf)/count(team) as pf'),
+                    DB::raw('SUM(turnover)/count(team) as turnover'),
+                    DB::raw('SUM(pts)/count(team) as pts')
+                )
+                ->where('player_id',$player_id)
+                ->first();
 
         $game_log = Games::select('games.*','boxscore.team as myteam')
                 ->leftJoin('boxscore','boxscore.game_id','=','games.id')
@@ -114,9 +82,9 @@ class HomeCtrl extends Controller
         return view('guest.profile',[
             'title' => '#'.$name->jersey.' '.$name->fname.' '.$name->lname.', '.$name->position,
             'data' => $data,
-            'career' => $career,
             'game_log' => $game_log,
-            'player_id' => $player_id
+            'player_id' => $player_id,
+            'stats' => $stats
         ]);
     }
 
@@ -181,6 +149,7 @@ class HomeCtrl extends Controller
             DB::raw('SUM(fg2a)/count(team) as fg2a'),
             DB::raw('SUM(fg3m)/count(team) as fg3m'),
             DB::raw('SUM(fg3a)/count(team) as fg3a'),
+            DB::raw('SUM(win)/count(team) as win'),
             DB::raw('(SUM(fg2m) + SUM(fg3m))/(SUM(fg2a) + SUM(fg3a)) as fg_per'),
             DB::raw('(SUM(fg3m))/(SUM(fg3a)) as fg3_per'),
             DB::raw('(SUM(ftm))/(SUM(fta)) as ft_per'),
@@ -209,11 +178,14 @@ class HomeCtrl extends Controller
             $title = 'Block Per Game Statistics';
             $col = 'blk';
         }else if($sort=='3-fieldgoal'){
-            $title = '3-Point Field Goals';
+            $title = '3-Point Field Goals %';
             $col = 'fg3_per';
         }else if($sort=='freethrow'){
             $title = 'Free-Throw Shooting Statistics';
             $col = 'ft_per';
+        }else if($sort=='winning'){
+            $title = 'Winning Percentage';
+            $col = 'win';
         }
 
         $data = $data->orderBy($col,'desc')

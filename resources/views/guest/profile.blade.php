@@ -19,7 +19,7 @@
                     <div class="table-responsive">
                         <table class="table table-stats table-striped table-hover">
                             <tr class="bg-black">
-                                <th></th>
+                                <th>WIN%</th>
                                 <th>GP</th>
                                 <th>FGM-FGA</th>
                                 <th>FG%</th>
@@ -35,43 +35,25 @@
                                 <th>TOPG</th>
                                 <th>PPG</th>
                             </tr>
-                            @if($career['gp']>0)
-                            <tr>
-                                <?php
-                                    $fgm = $career['fg2m'] + $career['fg3m'];
-                                    $fga = $career['fg2a'] + $career['fg3a'];
-                                    $fg = number_format(($fgm/$fga)*100,1);
-                                ?>
-                                <th>Career</th>
-                                <th>{{ $career['gp'] }}</th>
-                                <th>{{ $fgm }}-{{ $fga }}</th>
-                                <th>{{ $fg }}%</th>
-                                <th>{{ $career['fg3m'] }}-{{ $career['fg3a'] }}</th>
-                                <th>
-                                    @if($career['fg3a']>0)
-                                        {{ number_format(($career['fg3m']/$career['fg3a'])*100,1) }}%
-                                    @else
-                                        0.0%
-                                    @endif
 
-                                </th>
-                                <th>{{ $career['ftm'] }}-{{ $career['fta'] }}</th>
-                                <th>
-                                    @if($career['fta']>0)
-                                        {{ number_format(($career['ftm']/$career['fta'])*100,1) }}%
-                                    @else
-                                        0.0%
-                                    @endif
-                                </th>
-                                <th>{{ $career['apg'] }}</th>
-                                <th>{{ $career['rpg'] }}</th>
-                                <th>{{ $career['bpg'] }}</th>
-                                <th>{{ $career['spg'] }}</th>
-                                <th>{{ $career['pfpg'] }}</th>
-                                <th>{{ $career['tpg'] }}</th>
-                                <th>{{ $career['ppg'] }}</th>
+                            <tr>
+                                <th>{{ number_format($stats->win*100,1) }}%</th>
+                                <th>{{ $stats->gp }}</th>
+                                <th>{{ number_format($stats->fgm,1) }}-{{ number_format($stats->fga,1) }}</th>
+                                <th>{{ number_format($stats->fg_per*100,1) }}%</th>
+                                <th>{{ number_format($stats->fg3m,1) }}-{{ number_format($stats->fg3a,1) }}</th>
+                                <th>{{ number_format($stats->fg3_per*100,1) }}%</th>
+                                <th>{{ number_format($stats->ftm,1) }}-{{ number_format($stats->fta,1) }}</th>
+                                <th>{{ number_format($stats->ft_per*100,1) }}%</th>
+                                <th>{{ number_format($stats->ast,1) }}</th>
+                                <th>{{ number_format($stats->reb,1) }}</th>
+                                <th>{{ number_format($stats->blk,1) }}</th>
+                                <th>{{ number_format($stats->stl,1) }}</th>
+                                <th>{{ number_format($stats->pf,1) }}</th>
+                                <th>{{ number_format($stats->turnover,1) }}</th>
+                                <th>{{ number_format($stats->pts,1) }}</th>
                             </tr>
-                            @endif
+
                         </table>
                     </div>
                 </div>
@@ -127,11 +109,13 @@
                                 <tr>
                                     <th>{{ date('m/d',strtotime($log->date_match)) }}</th>
                                     <th>
+                                        <a href="{{ url('score/boxscore/'.$log->id) }}" target="_blank">
                                         @if($log->myteam == $log->home_team)
                                             {{ $log->away_team }}
                                         @else
                                             {{ $log->home_team }}
                                         @endif
+                                        </a>
                                     </th>
                                     <th>
 

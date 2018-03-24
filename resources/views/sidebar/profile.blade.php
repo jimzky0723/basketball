@@ -4,7 +4,7 @@
     </div>
     <div class="panel-body">
         <div class="thumbnail img-responsive">
-            <img src="{{ url('public/upload/portrait/'.$data->portrait_pic) }}" />
+            <img src="{{ url('public/upload/profile/'.$data->prof_pic.'/?img='.date('YmdHis')) }}" />
             <div class="text-center">
                 <span class="title-info">{{ $data->fname }} {{ $data->lname }}
                 <br />
@@ -49,19 +49,19 @@
         <table class="table table-stat" style="margin-bottom: 0px;">
             <tr>
                 <td>GP</td>
-                <td>{{ $career['gp'] }}</td>
+                <td>{{ $stats->gp }}</td>
             </tr>
             <tr>
                 <td>PPG</td>
-                <td>{{ $career['ppg'] }}</td>
+                <td>{{ number_format($stats->pts,1) }}</td>
             </tr>
             <tr>
                 <td>APG</td>
-                <td>{{ $career['apg'] }}</td>
+                <td>{{ number_format($stats->ast,1) }}</td>
             </tr>
             <tr>
                 <td>RPG</td>
-                <td>{{ $career['rpg'] }}</td>
+                <td>{{ number_format($stats->reb,1) }}</td>
             </tr>
         </table>
     </div>

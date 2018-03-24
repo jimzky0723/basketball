@@ -91,9 +91,16 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <a href="{{ url('admin/games/boxscore/'.$game->id) }}" class="btn btn-xs btn-success btn-block">
+                                            @if($game->status)
+                                            <a href="{{ url('admin/games/boxscore/'.$game->id) }}" class="btn btn-xs btn-info btn-block">
                                                 <i class="fa fa-table"></i> Box Score
                                             </a>
+                                            @else
+                                            <a href="{{ url('admin/games/boxscore/'.$game->id) }}" class="btn btn-xs btn-success btn-block">
+                                                <i class="fa fa-send"></i> Start Game
+                                            </a>
+                                            @endif
+
                                         </td>
                                     </tr>
                                     @endforeach

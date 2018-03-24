@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Boxscore;
+use App\Games;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -34,4 +35,5 @@ class ParamCtrl extends Controller
             ->first();
         return $stats;
     }
+
 }

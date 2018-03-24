@@ -123,11 +123,12 @@ class GameCtrl extends Controller
             $losser_score = $losser->pts;
         }
 
-
+        $winner = ($home_score > $away_score) ? $home:$away;
+        $losser = ($home_score < $away_score) ? $home:$away;
         $data = array(
             'home_score' => $home_score,
             'away_score' => $away_score,
-            'winner' => ($home_score > $away_score) ? $home:$away,
+            'winner' => $winner,
             'winner_id' => $winner_id,
             'winner_score' => $winner_score,
             'losser_id' => $losser_id,
@@ -137,6 +138,17 @@ class GameCtrl extends Controller
         Games::where('id',$game_id)
             ->update($data);
 
+        Boxscore::where('game_id',$game_id)
+            ->where('team',$winner)
+            ->update([
+                'win' => 1
+            ]);
+
+        Boxscore::where('game_id',$game_id)
+            ->where('team',$losser)
+            ->update([
+                'win' => 0
+            ]);
 
         return redirect()->back();
     }

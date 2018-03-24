@@ -14,7 +14,8 @@
                                     <option {{ ($sort=='ast') ? 'selected':'' }} value="assist">Assist</option>
                                     <option {{ ($sort=='fg_per') ? 'selected':'' }} value="fieldgoal">Field Goal %</option>
                                     <option {{ ($sort=='fg3_per') ? 'selected':'' }} value="3-fieldgoal">3-Field Goal %</option>
-                                    <option {{ ($sort=='ft_per') ? 'selected':'' }} value=freethrow>Free Throw</option>
+                                    <option {{ ($sort=='ft_per') ? 'selected':'' }} value=freethrow>Free Throw %</option>
+                                    <option {{ ($sort=='win') ? 'selected':'' }} value=winning>Winning %</option>
                                     <option {{ ($sort=='reb') ? 'selected':'' }} value="rebound">Rebound</option>
                                     <option {{ ($sort=='stl') ? 'selected':'' }} value="steal">Steal</option>
                                     <option {{ ($sort=='blk') ? 'selected':'' }} value="block">Block</option>
@@ -35,6 +36,7 @@
                                 <th>RANK</th>
                                 <th>NAME</th>
                                 <th>GP</th>
+                                <th>WIN%</th>
                                 <th>PTS</th>
                                 <th>2PM</th>
                                 <th>2PA</th>
@@ -72,6 +74,7 @@
                                         <span class="text-muted">{{ $player->position }}</span>
                                     </td>
                                     <td>{{ $row->gp }}</td>
+                                    <td class="{{ ($sort=='win') ? 'bg-gray':'' }}">{{ number_format($row->win*100,1) }}%</td>
                                     <td class="{{ ($sort=='pts') ? 'bg-gray':'' }}">{{ number_format($row->pts,1) }}</td>
                                     <td class="{{ ($sort=='fg_per') ? 'bg-gray':'' }}">{{ number_format($row->fg2m,1) }}</td>
                                     <td class="{{ ($sort=='fg_per') ? 'bg-gray':'' }}">{{ number_format($row->fg2a,1) }}</td>

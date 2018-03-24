@@ -50,7 +50,7 @@
                                    <td>{{ $row->stl }}</td>
                                    <td>{{ $row->blk }}</td>
                                    <td>{{ $row->turnover }}</td>
-                                   <td>{{ $row->eff }}</td>
+                                   <td>{{ ($row->eff>0) ? '+':'' }}{{ $row->eff }}</td>
                                </tr>
                             @endforeach
                         </table>
