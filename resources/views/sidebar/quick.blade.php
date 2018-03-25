@@ -4,7 +4,7 @@
     </div>
     <div class="panel-body">
         <div class="list-group">
-            <a href="{{ asset('player/ranking') }}" class="list-group-item clearfix">
+            <a href="{{ asset('ranking') }}" class="list-group-item clearfix">
                 Player Rankings
             </a>
             <a href="{{ asset('stats') }}" class="list-group-item clearfix">
@@ -15,22 +15,34 @@
     </div>
 </div>
 
+
+<?php
+$comm = \App\Http\Controllers\ParamCtrl::getCommitteeOfTheWeek();
+?>
+@if(count($comm['comm']))
 <div class="panel panel-jim">
     <div class="panel-heading">
-        <h3 class="panel-title">DOH Systems</h3>
+        <h3 class="panel-title">Committee of the Week</h3>
+        <small>{{ date('l M d, Y',strtotime($comm['date'])) }}</small>
     </div>
     <div class="panel-body">
         <div class="list-group">
-            <a href="http://210.4.59.2/dts" class="list-group-item clearfix">
-                Document Tracking System (DTS)
-            </a>
-            <a href="http://210.4.59.2/pis" class="list-group-item clearfix">
-                Personal Information System (PIS)
-            </a>
-            <a href="http://210.4.59.2/dtr" class="list-group-item clearfix">
-                Daily Time Record (DTR)
-            </a>
+            @foreach($comm['comm'] as $row)
+                <?php $player = \App\Players::find($row->player_id); ?>
+                <a href="#" class="list-group-item clearfix">
+                    <div class="col-xs-8">
+                        <span class="text-success text-bold">{{ $player->fname }} {{ $player->lname }}</span>
+                        <br />
+                        <span class="text-warning text-bold">{{ $player->section }}</span>
+                    </div>
+                    <div class="col-xs-4">
+                        <img src="{{ url('pictures/profile/'.$player->prof_pic) }}" class="img-responsive">
+                    </div>
+
+                </a>
+            @endforeach
         </div>
 
     </div>
 </div>
+@endif

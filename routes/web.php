@@ -42,7 +42,7 @@ Route::post('admin/player/update','admin\PlayerCtrl@update');
 
 
 Route::get('admin/games','admin\GameCtrl@index');
-Route::get('admin/games/endgame/{game_id}','admin\GameCtrl@calculate');
+Route::post('admin/games/endgame/{game_id}','admin\GameCtrl@endGame');
 
 Route::get('admin/games/assign/{game_id}','admin\GameCtrl@assign');
 Route::get('admin/games/player/remove/{game_id}/{player_id}','admin\GameCtrl@removePlayer');
@@ -60,7 +60,19 @@ Route::post('admin/games/store','admin\GameCtrl@store');
 Route::post('admin/games/assign','admin\GameCtrl@assignPlayer');
 Route::get('admin/games/destroy/{game_id}','admin\GameCtrl@destroy');
 
+Route::get('admin/committee','admin\CommCtrl@index');
+Route::post('admin/committee','admin\CommCtrl@store');
+
+Route::post('admin/home/fb','admin\NewsCtrl@fbPost');
+Route::post('admin/home/award','admin\NewsCtrl@awardPost');
+
+Route::get('admin/awardee','admin\AwardCtrl@index');
+Route::post('admin/awardee/{type}','admin\AwardCtrl@store');
+
 //PARAM of the GAME
 Route::get('game/score/{game_id}/{team}','GameCtrl@getScore');
+Route::get('pictures/{folder}/{file}','ParamCtrl@pictures');
 
-
+Route::get('sample',function(){
+    echo (int) date('m',strtotime('2018-03-26'));
+});

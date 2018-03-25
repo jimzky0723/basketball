@@ -1,7 +1,9 @@
 <?php
     $top = \App\Http\Controllers\ParamCtrl::getTopPlayer();
-    $player_id = $top->player_id;
+    $player_id = $top['player_id'];
+    $stats = $top['stats'];
     $player = \App\Players::find($player_id);
+
 ?>
 <div class="panel panel-jim">
     <div class="panel-heading">
@@ -13,37 +15,46 @@
             <div class="text-center">
                 <span class="title-info">{{ $player->fname }} {{ $player->lname }}</span>
                 <br />
-                <small class="text-muted">Average of {{ number_format($top->pts,1) }} PPG, {{ number_format($top->ast,1) }} APG, {{ number_format($top->reb,1) }} RPG</small>
+                <small class="text-muted">Average of
+                @foreach($stats as $row)
+                    {{ number_format($row['count'],1) }} {{ $row['value'] }}
+                @endforeach
+                </small>
             </div>
 
         </div>
 
     </div>
 </div>
-
+<?php
+$player_week = \App\Awards::where('type','week')
+        ->orderBy('id','desc')
+        ->first();
+?>
+@if(count($player_week))
+<?php
+    $player = \App\Players::find($player_week['player_id']);
+    $week_stats = $player_week['stats'];
+?>
 <div class="panel panel-jim">
     <div class="panel-heading">
-        <h3 class="panel-title">Committee of the Week</h3>
+        <h3 class="panel-title">Featured Player of the Week</h3>
     </div>
     <div class="panel-body">
-        <div class="list-group">
-            <a href="#" class="list-group-item clearfix">
-                <img src="{{ url('public/upload/profile/Wairley VonCCabiluna19901210.png') }}" height="40px">
-                <span class="text-success">Wairley Von Cabiluna</span>
-            </a>
-            <a href="#" class="list-group-item clearfix">
-                <img src="{{ url('public/upload/profile/JeswyrneDGonzales19960912.png') }}" height="40px">
-                <span class="text-success">Jeswyrne Gonzales</span>
-            </a>
-            <a href="#" class="list-group-item clearfix">
-                <img src="{{ url('public/upload/profile/JimmyBaronLomocso19900923.png') }}" height="40px">
-                <span class="text-success">Jimmy Lomocso</span>
-            </a>
-            <a href="#" class="list-group-item clearfix">
-                <img src="{{ url('public/upload/profile/RuselTTayong19950223.png') }}" height="40px">
-                <span class="text-success">Rusel Tayong</span>
-            </a>
+        <div class="thumbnail img-responsive">
+            <img src="{{ url('pictures/profile/'.$player->prof_pic) }}" />
+            <div class="text-center">
+                <span class="title-info">{{ $player->fname }} {{ $player->lname }}</span>
+                <br />
+                <small class="text-muted">Average of
+                    @foreach($stats as $row)
+                        {{ number_format($row['count'],1) }} {{ $row['value'] }}
+                    @endforeach
+                </small>
+            </div>
+
         </div>
 
     </div>
 </div>
+@endif

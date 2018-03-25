@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Boxscore;
 use App\Games;
+use App\News;
 use App\Players;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -18,8 +19,10 @@ class HomeCtrl extends Controller
 
     public function index()
     {
+        $news = News::orderBy('id','desc')->paginate(5);
         return view('guest.home',[
             'title' => 'DOH Basketball Club',
+            'news' => $news
         ]);
     }
 

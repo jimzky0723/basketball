@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Games;
 use App\Boxscore;
+use App\News;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -33,9 +34,9 @@ class GameCtrl extends Controller
             'away_team' => $req->away_team,
             'date_match' => $req->date_match
         );
-        Games::create($data);
+        $id = Games::create($data)->id;
 
-        return redirect()->back()->with('status','saved');
+        return redirect('admin/games/assign/'.$id);
     }
 
     public function assign($game_id)
@@ -151,6 +152,18 @@ class GameCtrl extends Controller
             ]);
 
         return redirect()->back();
+    }
+
+    public function endGame(Request $req,$game_id)
+    {
+        $news = array(
+            'type' => 'score',
+            'game_id' => $game_id,
+            'contents' => $req->contents
+        );
+        News::create($news);
+
+        return self::calculate($game_id);
     }
 
     public function removePlayer($game_id,$player_id)

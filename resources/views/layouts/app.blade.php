@@ -42,6 +42,16 @@
             z-index:999999999;
             display: none;
         }
+        .panel-body {
+            padding: 0px !important;
+        }
+        .list-group,.thumbnail {
+            margin-bottom: 0px !important;
+        }
+        .list-group-item {
+            border-radius: 0px !important;
+        }
+
     </style>
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -92,10 +102,11 @@
                 <li><a href="{{ url('/admin') }}">Home</a></li>
                 <li><a href="{{ url('admin/players') }}">Players</a></li>
                 <li><a href="{{ url('admin/games') }}">Schedule</a></li>
-                <li><a href="{{ url('admin/stats') }}">Stats</a></li>
+                <li><a href="{{ url('admin/awardee') }}">Award</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Settings <span class="caret"></span></a>
                     <ul class="dropdown-menu">
+                        <li><a href="{{ url('admin/committee') }}">Committee of the Week</a></li>
                         <li><a href="{{ URL::to('logout') }}">Account Settings</a></li>
                         <li class="divider"></li>
                         <li><a href="{{ URL::to('logout') }}">Logout</a></li>

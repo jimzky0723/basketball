@@ -424,7 +424,11 @@
 
 @section('modal')
     <label>END GAME?</label>
-    <form method="GET" action="{{ url('admin/games/endgame/'.$data->id) }}">
+    <form method="POST" action="{{ url('admin/games/endgame/'.$data->id) }}">
+        {{ csrf_field() }}
+        <div class="form-group">
+            <textarea class="form-control" name="contents" style="resize: none;" rows="4" placeholder="Put description of the game..."></textarea>
+        </div>
         <div class="alert alert-warning" style="margin-bottom: 0px;">
             <font class="text-warning">
                 <i class="fa fa-warning"></i> Are you sure you want to end the game?
