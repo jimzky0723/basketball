@@ -35,7 +35,7 @@ class NewsCtrl extends Controller
             $player = Awards::where('type','week')
                 ->orderBy('id','desc')
                 ->first();
-            if(count($player)==0)
+            if(!isset($player))
             {
                 return redirect()->back()->with('status','nothing');
             }
@@ -49,7 +49,7 @@ class NewsCtrl extends Controller
             $player = Awards::where('type','month')
                 ->orderBy('id','desc')
                 ->first();
-            if(count($player)==0)
+            if(!isset($player))
             {
                 return redirect()->back()->with('status','nothing');
             }
@@ -61,7 +61,7 @@ class NewsCtrl extends Controller
             $title = 'Player of the Month :'. $month;
         }else if($award=='overall'){
             $player = ParamCtrl::getTopPlayer();
-            if(count($player)==0)
+            if(!isset($player))
             {
                 return redirect()->back()->with('status','nothing');
             }

@@ -103,7 +103,7 @@
                                 $total_3P = 0;
                                 $total_ftP = 0;
                             ?>
-                            @if(count($game_log))
+                            @if(isset($game_log))
                                 @foreach($game_log as $log)
                                 <?php $counter += 1; ?>
                                 <tr>

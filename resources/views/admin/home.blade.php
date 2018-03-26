@@ -51,7 +51,7 @@
                     </div>
                 </div>
             </div>
-                @if(count($news))
+                @if(isset($news))
                     @foreach($news as $row)
                         @if($row->type=='fb')
                             <div class="box box-success text-center">

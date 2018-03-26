@@ -228,7 +228,7 @@ class ParamCtrl extends Controller
     {
         $date = date('M d, Y');
         $comm = Comm::limit(6)->get();
-        if(count($comm)){
+        if(isset($comm)){
             $date = Comm::first()->schedule;
         }
 

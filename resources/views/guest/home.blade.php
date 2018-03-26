@@ -24,7 +24,7 @@
     </style>
     <div class="news">
         <div class="col-md-6">
-            @if(count($news))
+            @if(isset($news))
                 @foreach($news as $row)
                     @if($row->type=='fb')
                     <div class="box box-success text-center">

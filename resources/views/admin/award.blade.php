@@ -31,7 +31,7 @@
                         </div>
                     </form>
                     <hr />
-                    @if(count($week))
+                    @if(isset($week))
                     <?php
                         $player = \App\Players::find($week->player_id);
                         $week_stats = \App\Http\Controllers\ParamCtrl::getPlayerStats($week->player_id);
@@ -85,7 +85,7 @@
                         </div>
                     </form>
                     <hr />
-                    @if(count($month))
+                    @if(isset($month))
                         <?php
                         $player = \App\Players::find($month->player_id);
                         $week_stats = \App\Http\Controllers\ParamCtrl::getPlayerStats($month->player_id);

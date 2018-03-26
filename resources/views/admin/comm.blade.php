@@ -19,7 +19,7 @@
                     </div>
                     </form>
                     <hr />
-                    @if(count($data))
+                    @if(isset($data))
                         @foreach($data as $row)
                             <div class="col-sm-6 col-md-4">
                                 <div class="thumbnail">

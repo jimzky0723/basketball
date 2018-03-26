@@ -33,7 +33,7 @@
                             ->where('team',$data->home_team)
                             ->get();
                     ?>
-                    @if(count($players))
+                    @if(isset($players))
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead class="bg-success">
@@ -103,7 +103,7 @@
                         ->where('team',$data->away_team)
                         ->get();
                     ?>
-                    @if(count($players))
+                    @if(isset($players))
                         <div class="table-responsive">
                             <table class="table table-striped">
                                 <thead class="bg-success">

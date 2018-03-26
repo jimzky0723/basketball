@@ -19,7 +19,7 @@
 <?php
 $comm = \App\Http\Controllers\ParamCtrl::getCommitteeOfTheWeek();
 ?>
-@if(count($comm['comm']))
+@if(isset($comm['comm']))
 <div class="panel panel-jim">
     <div class="panel-heading">
         <h3 class="panel-title">Committee of the Week</h3>

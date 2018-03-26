@@ -21,7 +21,7 @@
                     </h3>
                 </div>
                 <div class="box-body">
-                    @if(count($data))
+                    @if(isset($data))
                     <div class="table-responsive">
                         @foreach($games as $row)
                         <?php

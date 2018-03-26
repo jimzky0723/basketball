@@ -35,7 +35,7 @@
                             </font>
                         </div>
                     @endif
-                    @if(count($data))
+                    @if(isset($data))
                         @foreach($data as $row)
                             <?php
                                 $day = date('l', strtotime($row->date_match));

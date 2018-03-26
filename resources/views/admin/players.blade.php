@@ -30,7 +30,7 @@
                         </font>
                     </div>
                 @endif
-                @if(count($data))
+                @if(isset($data))
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead class="bg-success">

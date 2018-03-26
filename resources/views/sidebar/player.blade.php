@@ -31,7 +31,7 @@ $player_week = \App\Awards::where('type','week')
         ->orderBy('id','desc')
         ->first();
 ?>
-@if(count($player_week))
+@if(isset($player_week))
 <?php
     $player = \App\Players::find($player_week['player_id']);
     $week_stats = $player_week['stats'];
