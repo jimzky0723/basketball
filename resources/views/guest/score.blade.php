@@ -81,7 +81,7 @@
                                     </small>
                                 </td>
                                 <td rowspan="2">
-                                    <a href="{{ url('score/boxscore/'.$game->id) }}" class="text-info btn btn-sm btn-block" style="border: 1px solid #00c0ef;">
+                                    <a href="{{ url('score/boxscore/'.$row->id) }}" class="text-info btn btn-sm btn-block" style="border: 1px solid #00c0ef;">
                                         Box Score
                                     </a>
                                 </td>
