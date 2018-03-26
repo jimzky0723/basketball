@@ -185,6 +185,7 @@ $players = \App\Boxscore::where('game_id',$data->id)
             type: 'GET',
             success: function(data){
                 $('.score').html(data).fadeOut().fadeIn();
+
             },
             error: function(){
                 $('#serverModal').modal('show');

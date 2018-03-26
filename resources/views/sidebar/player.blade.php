@@ -34,6 +34,7 @@ $player_week = \App\Awards::where('type','week')
 @if(isset($player_week))
 <?php
     $player = \App\Players::find($player_week['player_id']);
+    $player_week = \App\Http\Controllers\ParamCtrl::getWeekPlayerByWeek($player_week->award_date,$player_week->player_id);
     $week_stats = $player_week['stats'];
 ?>
 <div class="panel panel-jim">
@@ -47,7 +48,7 @@ $player_week = \App\Awards::where('type','week')
                 <span class="title-info">{{ $player->fname }} {{ $player->lname }}</span>
                 <br />
                 <small class="text-muted">Average of
-                    @foreach($stats as $row)
+                    @foreach($week_stats as $row)
                         {{ number_format($row['count'],1) }} {{ $row['value'] }}
                     @endforeach
                 </small>
