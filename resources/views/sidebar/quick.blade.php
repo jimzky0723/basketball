@@ -29,7 +29,7 @@ $comm = \App\Http\Controllers\ParamCtrl::getCommitteeOfTheWeek();
         <div class="list-group">
             @foreach($comm['comm'] as $row)
                 <?php $player = \App\Players::find($row->player_id); ?>
-                <a href="#" class="list-group-item clearfix">
+                <a href="{{ url('player/'.$player->id) }}" class="list-group-item clearfix">
                     <div class="col-xs-8">
                         <span class="text-success text-bold">{{ $player->fname }} {{ $player->lname }}</span>
                         <br />
