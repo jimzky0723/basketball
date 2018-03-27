@@ -21,7 +21,7 @@
         .news p {
             color: #888;
         }
-        .dropdown {
+        .action-dropdown {
             font-weight: bold;
             padding: 3px 5px;
             cursor: pointer;
@@ -79,7 +79,7 @@
                                 <div class="box-header with-border">
                                     <div class="pull-right">
                                         <div class="dropdown">
-                                            <span class="dropdown dropdown-toggle" id="dropdownMenu{{$row->id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                            <span class="action-dropdown dropdown-toggle" id="dropdownMenu{{$row->id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                                 ...
                                             </span>
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenu{{$row->id}}">
@@ -97,7 +97,7 @@
                                 <div class="box-header with-border">
                                     <div class="pull-right">
                                         <div class="dropdown">
-                                            <span class="dropdown dropdown-toggle" id="dropdownMenu{{$row->id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                            <span class="action-dropdown dropdown-toggle" id="dropdownMenu{{$row->id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                                 ...
                                             </span>
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenu{{$row->id}}">
@@ -127,7 +127,7 @@
                                 <div class="box-header with-border">
                                     <div class="pull-right">
                                         <div class="dropdown">
-                                            <span class="dropdown dropdown-toggle" id="dropdownMenu{{$row->id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                            <span class="action-dropdown dropdown-toggle" id="dropdownMenu{{$row->id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                                 ...
                                             </span>
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenu{{$row->id}}">
