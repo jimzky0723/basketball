@@ -188,11 +188,29 @@
                                 <tr class="bg-gray">
                                     <th colspan="3">Last 10 Games</th>
                                     <th>{{ number_format($total_fgm/$counter,1) }}-{{ number_format($total_fga/$counter,1) }}</th>
-                                    <th>{{ number_format($total_fP/$counter,1) }}%</th>
+                                    <?php
+                                        $fg_per = 0;
+                                        if($total_fga!=0){
+                                            $fg_per = ($total_fgm/$counter) / ($total_fga/$counter);
+                                        }
+                                    ?>
+                                    <th>{{ number_format($fg_per*100,1) }}%</th>
                                     <th>{{ number_format($total_3fm/$counter,1) }}-{{ number_format($total_3fa/$counter,1) }}</th>
-                                    <th>{{ number_format($total_3P/$counter,1) }}%</th>
+                                    <?php
+                                        $fg3_per = 0;
+                                        if($total_3fa!=0){
+                                            $fg3_per = ($total_3fm/$counter) / ($total_3fa/$counter);
+                                        }
+                                    ?>
+                                    <th>{{ number_format($fg3_per*100,1) }}%</th>
                                     <th>{{ number_format($total_ftm/$counter,1) }}-{{ number_format($total_fta/$counter,1) }}</th>
-                                    <th>{{ number_format($total_ftP/$counter,1) }}%</th>
+                                    <?php
+                                        $ft_per = 0;
+                                        if($total_fta!=0){
+                                            $ft_per = ($total_ftm/$counter)/($total_fta/$counter);
+                                        }
+                                    ?>
+                                    <th>{{ number_format($ft_per*100,1) }}%</th>
                                     <th>{{ number_format($total_reb/$counter,1) }}</th>
                                     <th>{{ number_format($total_ast/$counter,1) }}</th>
                                     <th>{{ number_format($total_blk/$counter,1) }}</th>

@@ -65,6 +65,9 @@ Route::post('admin/committee','admin\CommCtrl@store');
 
 Route::post('admin/home/fb','admin\NewsCtrl@fbPost');
 Route::post('admin/home/award','admin\NewsCtrl@awardPost');
+Route::post('admin/home/delete/post','admin\NewsCtrl@deletePost');
+Route::post('admin/home/update/post','admin\NewsCtrl@updatePost');
+Route::get('admin/home/post/{id}','admin\NewsCtrl@getPost');
 
 Route::get('admin/awardee','admin\AwardCtrl@index');
 Route::post('admin/awardee/{type}','admin\AwardCtrl@store');

@@ -40,7 +40,7 @@ class NewsCtrl extends Controller
                 return redirect()->back()->with('status','nothing');
             }
             $player_id = $player->player_id;
-            $stats = ParamCtrl::getPlayerStats($player_id);
+            $stats = ParamCtrl::getWeekPlayerByWeek($player->award_date,$player_id);
             $stats = $stats['stats'];
             $award = 'Player of the Week';
             $week = date('W',strtotime($player->award_date));
@@ -54,7 +54,7 @@ class NewsCtrl extends Controller
                 return redirect()->back()->with('status','nothing');
             }
             $player_id = $player->player_id;
-            $stats = ParamCtrl::getPlayerStats($player_id);
+            $stats = ParamCtrl::getMonthPlayerByMonth($player->award_date,$player_id);
             $stats = $stats['stats'];
             $month = date('F',strtotime($player->award_date));
             $award = 'Player of the Month';
@@ -90,5 +90,32 @@ class NewsCtrl extends Controller
         endforeach;
         $contents .= '</span>. Congratulations!';
         return $contents;
+    }
+
+    public function deletePost(Request $req)
+    {
+        $id = $req->postID;
+        News::where('id',$id)
+            ->delete();
+
+        return redirect()->back()->with('status','deleted');
+    }
+
+    public function getPost($id)
+    {
+        $news = News::find($id);
+        return $news->contents;
+    }
+
+    public function updatePost(Request $req)
+    {
+        $id = $req->postUpdateID;
+        $contents = $req->contents;
+        News::where('id',$id)
+            ->update([
+                'contents' => $contents
+            ]);
+
+        return redirect()->back()->with('status','updated');
     }
 }
