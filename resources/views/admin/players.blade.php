@@ -42,6 +42,7 @@
                                     <th>HT</th>
                                     <th>WT</th>
                                     <th>SECTION</th>
+                                    <th>STATUS</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -58,6 +59,16 @@
                                     <td>{{ $row->height }}</td>
                                     <td>{{ $row->weight }}</td>
                                     <td>{{ $row->section }}</td>
+                                    <td>
+                                        @if($row->status==0)
+                                            <span class="text-danger">Unregistered</span>
+                                        @else
+                                            <span class="text-success">
+                                                <i class="fa fa-check"></i> Registered<br />
+                                                <small class="text-muted">Date Expired: {{ date('M d, Y',strtotime($row->date_expired)) }}</small>
+                                            </span>
+                                        @endif
+                                    </td>
                                 </tr>
                             @endforeach
                             </tbody>

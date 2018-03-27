@@ -21,6 +21,14 @@
                                     <option {{ ($sort=='blk') ? 'selected':'' }} value="block">Block</option>
                                     <option {{ ($sort=='turnover') ? 'selected':'' }} value="turnover">Turnover</option>
                                 </select>
+                                <select name="filter" class="form-control">
+                                    <option value="">All</option>
+                                    <option {{ ($filter=='PG') ? 'selected':'' }} value="PG">Point Guard</option>
+                                    <option {{ ($filter=='SG') ? 'selected':'' }} value="SG">Shooting Guard</option>
+                                    <option {{ ($filter=='SF') ? 'selected':'' }} value="SF">Small Forward</option>
+                                    <option {{ ($filter=='PF') ? 'selected':'' }} value="PF">Power Forward</option>
+                                    <option {{ ($filter=='C') ? 'selected':'' }} value="C">Center</option>
+                                </select>
                                 <button type="submit" class="btn btn-success btn-sm btn-flat">
                                     <i class="fa fa-sort"></i> Sort
                                 </button>

@@ -26,13 +26,25 @@ class HomeCtrl extends Controller
         ]);
     }
 
+    public function filterPlayers(Request $req)
+    {
+        $filter = $req->filter;
+        Session::put('filterPlayer',$filter);
+        return self::players();
+    }
+
     public function players()
     {
-        $data = Players::orderBy('lname','asc')
-            ->paginate(20);
+        $data = Players::orderBy('lname','asc');
+        $filter = Session::get('filterPlayer');
+        if(isset($filter)){
+            $data = $data->where('position','like',"%$filter%");
+        }
+        $data = $data->paginate(20);
         return view('guest.players',[
             'title' => 'Players',
-            'data' => $data
+            'data' => $data,
+            'filter' => $filter
         ]);
     }
 
@@ -102,6 +114,13 @@ class HomeCtrl extends Controller
         ]);
     }
 
+    public function filterRanking(Request $req)
+    {
+        $filter = $req->filter;
+        Session::put('filterRanking',$filter);
+        return self::ranking();
+    }
+
     public function ranking()
     {
 
@@ -115,14 +134,23 @@ class HomeCtrl extends Controller
             DB::raw('SUM(turnover) as turnover'),
             DB::raw('(SUM(oreb)+SUM(dreb)) as reb'),
             DB::raw('(SUM(pts) + (SUM(oreb)+SUM(dreb)) + SUM(ast) + SUM(stl) + SUM(blk))-(((SUM(fg2a)+SUM(fg3a)) - (SUM(fg3m)+SUM(fg2m))) + (SUM(fta) - SUM(ftm)) + (SUM(turnover))) as eff')
-        )
+        );
+
+        $filter = Session::get('filterRanking');
+        if(isset($filter)){
+            $stats = $stats->leftJoin('players','players.id','=','boxscore.player_id')
+                    ->where('players.position','like',"%$filter%");
+        }
+
+        $stats = $stats
             ->orderBy('eff','desc')
             ->groupBy('player_id')
             ->limit(30)
             ->get();
         return view('guest.ranking',[
             'title' => 'TOP 30 Players: Overall Stats',
-            'data' => $stats
+            'data' => $stats,
+            'filter' => $filter
         ]);
     }
 

@@ -13,12 +13,14 @@
 
 Route::get('/','HomeCtrl@index');
 Route::get('/players','HomeCtrl@players');
+Route::post('/players','HomeCtrl@filterPlayers');
 Route::get('/player/{player_id}','HomeCtrl@profile');
 Route::get('/score','HomeCtrl@score');
 Route::get('/score/boxscore/{game_id}','HomeCtrl@boxscore');
 Route::get('stats','HomeCtrl@stats');
 Route::post('stats','HomeCtrl@stats');
 Route::get('ranking','HomeCtrl@ranking');
+Route::post('ranking','HomeCtrl@filterRanking');
 
 
 Route::get('/logout', function (){
