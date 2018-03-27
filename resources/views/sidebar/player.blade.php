@@ -6,12 +6,13 @@ $player_month = \App\Awards::where('type','month')
 @if(isset($player_month))
     <?php
     $player = \App\Players::find($player_month['player_id']);
+    $month = $player_month->award_date;
     $player_month = \App\Http\Controllers\ParamCtrl::getMonthPlayerByMonth($player_month->award_date,$player_month->player_id);
     $month_stats = $player_month['stats'];
     ?>
     <div class="panel panel-jim">
         <div class="panel-heading">
-            <h3 class="panel-title">Featured Player of the Week</h3>
+            <h3 class="panel-title">Player of the Month: {{ date('F',strtotime($month)) }}</h3>
         </div>
         <div class="panel-body">
             <div class="thumbnail img-responsive">
@@ -71,12 +72,13 @@ $player_week = \App\Awards::where('type','week')
 @if(isset($player_week))
 <?php
     $player = \App\Players::find($player_week['player_id']);
+    $week = $player_week->award_date;
     $player_week = \App\Http\Controllers\ParamCtrl::getWeekPlayerByWeek($player_week->award_date,$player_week->player_id);
     $week_stats = $player_week['stats'];
 ?>
 <div class="panel panel-jim">
     <div class="panel-heading">
-        <h3 class="panel-title">Featured Player of the Week</h3>
+        <h3 class="panel-title">Player of the Week: Week #{{ date('W',strtotime($week)) - 11 }}</h3>
     </div>
     <div class="panel-body">
         <div class="thumbnail img-responsive">
