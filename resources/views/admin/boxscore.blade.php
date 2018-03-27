@@ -427,7 +427,7 @@
     <form method="POST" action="{{ url('admin/games/endgame/'.$data->id) }}">
         {{ csrf_field() }}
         <div class="form-group">
-            <textarea class="form-control" name="contents" style="resize: none;" rows="4" placeholder="Put description of the game..."></textarea>
+            <textarea class="form-control" name="contents" style="resize: none;" rows="4" placeholder="Put description of the game...">Player of the Game: </textarea>
         </div>
         <div class="alert alert-warning" style="margin-bottom: 0px;">
             <font class="text-warning">
