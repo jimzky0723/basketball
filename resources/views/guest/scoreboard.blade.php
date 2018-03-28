@@ -75,9 +75,9 @@
 
         <div class="text-center">
             <font class="digital-score team">{{ $game->home_team }}</font>
-            <span class="score border digital-score">00</span>
+            <span class="score border digital-score home_score">00</span>
             <span class="quarter border digital-score shootClock">24</span>
-            <span class="score border digital-score">00</span>
+            <span class="score border digital-score away_score">00</span>
             <font class="digital-score team">{{ $game->away_team }}</font>
         </div>
     </div>
@@ -105,6 +105,7 @@
 @include('modal.timer')
 <script src="{{ asset('resources/assets/js/jquery.min.js') }}"></script>
 <script src="{{ asset('resources/assets/js/bootstrap.min.js') }}"></script>
+@include('script.firebase')
 <script>
     var minutes = 20;
     var seconds = 0;
