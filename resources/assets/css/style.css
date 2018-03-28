@@ -215,8 +215,18 @@ label {
     font-family: 'BrandName';
     src: url('../fonts/esp_bdit.ttf') format('truetype');
 }
+
+@font-face {
+    font-family: 'ScoreBoard';
+    src: url('../fonts/digital.ttf') format('truetype');
+}
 .navbar-brand {
     font-family: 'BrandName', Arial, sans-serif;
     font-size: 1.7em;
     color: #59ab91 !important;
+}
+
+.digital-score {
+    font-family: 'ScoreBoard', Arial, sans-serif;
+    font-weight: bold;
 }

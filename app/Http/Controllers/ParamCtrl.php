@@ -166,7 +166,7 @@ class ParamCtrl extends Controller
         );
     }
 
-    static function getMonthPlayer($date,$player_id)
+    static function getMonthPlayer($date)
     {
         $month = (int) date('m',strtotime($date));
         $stats = Boxscore::select(
@@ -180,8 +180,10 @@ class ParamCtrl extends Controller
         )
             ->leftJoin('games','games.id','=','boxscore.game_id')
             ->where(DB::raw('MONTH(games.date_match)'),$month)
-            ->where('boxscore.player_id',$player_id)
+            ->orderBy('eff','desc')
+            ->groupBy('player_id')
             ->first();
+
 
 
         $data['pts'] = array(
@@ -227,8 +229,7 @@ class ParamCtrl extends Controller
         )
             ->leftJoin('games','games.id','=','boxscore.game_id')
             ->where(DB::raw('MONTH(games.date_match)'),$month)
-            ->orderBy('eff','desc')
-            ->groupBy('player_id')
+            ->where('boxscore.player_id',$player_id)
             ->first();
 
 
