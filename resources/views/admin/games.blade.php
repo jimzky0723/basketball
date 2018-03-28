@@ -97,7 +97,7 @@
                                             </a>
                                             @else
                                             <!-- {{ url('admin/games/boxscore/'.$game->id) }} -->
-                                            <a href="{{ url('admin/games/boxscore/'.$game->id) }}" id="start-game" data-id="" onclick="setFirebase({{ $game }})" class="btn btn-xs btn-success btn-block">
+                                            <a href="#" id="start-game" data-id="" onclick="setFirebase({{ $game }})" class="btn btn-xs btn-success btn-block">
                                                 <i class="fa fa-send"></i> Start Game
                                             </a>
                                             @endif
@@ -140,6 +140,7 @@
                 }else{
                     console.log('Game already exists!');
                 }
+                window.location = "{{ url('admin/games/boxscore/') }}/"+game['id'];
             });     
         }
 

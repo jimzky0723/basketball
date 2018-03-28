@@ -169,7 +169,43 @@ function total_calculation(count, player_id, game, team = '', action = []){
 dataRef.on('child_added', function(data){
     var team = data.val().team;
 
-    get_player_boxscore(data,team);
+    fg2m = $('.players_status').find('td span#fg2m_' + data.val().player_id).html();
+    fg2a = $('.players_status').find('td span#fg2a_' + data.val().player_id).html();
+    fg3m = $('.players_status').find('td span#fg3m_' + data.val().player_id).html();
+    fg3a = $('.players_status').find('td span#fg3a_' + data.val().player_id).html();
+    fg23m = $('.players_status').find('td span#fg23m_' + data.val().player_id).html();
+    fg23a = $('.players_status').find('td span#fg23a_' + data.val().player_id).html();
+    ftm = $('.players_status').find('td span#ftm_' + data.val().player_id).html();
+    fta = $('.players_status').find('td span#fta_' + data.val().player_id).html();
+    oreb = $('.players_status').find('td span#oreb_' + data.val().player_id).html();
+    dreb = $('.players_status').find('td span#dreb_' + data.val().player_id).html();
+    treb = $('.players_status').find('td span#treb_' + data.val().player_id).html();
+    ast = $('.players_status').find('td span#ast_' + data.val().player_id).html();
+    stl = $('.players_status').find('td span#stl_' + data.val().player_id).html();
+    blk = $('.players_status').find('td span#blk_' + data.val().player_id).html();
+    to = $('.players_status').find('td span#turnover_' + data.val().player_id).html();
+    pf = $('.players_status').find('td span#pf_' + data.val().player_id).html();
+    pts = $('.players_status').find('td span#pts_' + data.val().player_id).html();
+
+    t_fg2m =  $('.text-warning').find('th span#'+ data.val().game +'_2fm_' + team.substr(team.length-1)).html();
+    t_fg2a =  $('.text-warning').find('th span#'+ data.val().game +'_2fa_' + team.substr(team.length-1)).html();
+    t_fg3m =  $('.text-warning').find('th span#'+ data.val().game +'_3fm_' + team.substr(team.length-1)).html();
+    t_fg3a =  $('.text-warning').find('th span#'+ data.val().game +'_3fa_' + team.substr(team.length-1)).html();
+    t_fgm =  $('.text-warning').find('th span#'+ data.val().game +'_fgm_' + team.substr(team.length-1)).html();
+    t_fga =  $('.text-warning').find('th span#'+ data.val().game +'_fga_' + team.substr(team.length-1)).html();
+    t_ftm =  $('.text-warning').find('th span#'+ data.val().game +'_ftm_' + team.substr(team.length-1)).html();
+    t_fta =  $('.text-warning').find('th span#'+ data.val().game +'_fta_' + team.substr(team.length-1)).html();
+    t_oreb =  $('.text-warning').find('th span#'+ data.val().game +'_oreb_' + team.substr(team.length-1)).html();
+    t_dreb =  $('.text-warning').find('th span#'+ data.val().game +'_dreb_' + team.substr(team.length-1)).html();
+    t_reb =  $('.text-warning').find('th span#'+ data.val().game +'_reb_' + team.substr(team.length-1)).html();
+    t_ast =  $('.text-warning').find('th span#'+ data.val().game +'_ast_' + team.substr(team.length-1)).html();
+    t_stl =  $('.text-warning').find('th span#'+ data.val().game +'_stl_' + team.substr(team.length-1)).html();
+    t_blk =  $('.text-warning').find('th span#'+ data.val().game +'_blk_' + team.substr(team.length-1)).html();
+    t_to =  $('.text-warning').find('th span#'+ data.val().game +'_to_' + team.substr(team.length-1)).html();
+    t_pf =  $('.text-warning').find('th span#'+ data.val().game +'_pf_' + team.substr(team.length-1)).html();
+    t_pts =  $('.text-warning').find('th span#'+ data.val().game +'_pts_' + team.substr(team.length-1)).html();
+
+    // get_player_boxscore(data,team);
 
     if(data.val().action == 'fg2m'){
        
@@ -261,7 +297,7 @@ dataRef.on('child_added', function(data){
         var actions = ['pf', 'pf'];
         addToView(actionsInt, actions, data.val().player_id, 1, team.substr(team.length-1), data.val().game);
     }
-
+ //   dataRef.child(data.key).remove();
     setTimeout(function(){
         dataRef.child(data.key).remove();
     }, 2000);

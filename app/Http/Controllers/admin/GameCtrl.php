@@ -72,7 +72,7 @@ class GameCtrl extends Controller
         ]);
     }
 
-    public function calculate($game_id)
+    public function calculate($game_id, $status=1)
     {
         $game = Games::find($game_id);
         $home = $game->home_team;
@@ -134,7 +134,7 @@ class GameCtrl extends Controller
             'winner_score' => $winner_score,
             'losser_id' => $losser_id,
             'losser_score' => $losser_score,
-            'status' => 1
+            'status' => $status
         );
         Games::where('id',$game_id)
             ->update($data);
@@ -210,6 +210,7 @@ class GameCtrl extends Controller
                 ->where('player_id',$player_id)
                 ->increment('pts',1);
         }
+        self::calculate($game_id,0);
         $score = self::getScore($game_id,$team);
         return $score;
 
@@ -252,6 +253,7 @@ class GameCtrl extends Controller
             'pts' => $pts
         );
         Boxscore::updateOrCreate($match,$data);
+        self::calculate($req->game_id);
         return redirect()->back();
     }
 
