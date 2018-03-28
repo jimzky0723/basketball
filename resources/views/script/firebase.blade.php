@@ -27,8 +27,8 @@
     var dbRef = firebase.database();
 
     var gameRef = dbRef.ref('Game');
-    var home = gameRef.child('15').child('home');
-    var away = gameRef.child('15').child('away');
+    var home = gameRef.child("{{ $game->id }}").child('home');
+    var away = gameRef.child("{{ $game->id }}").child('away');
 //    home.set({
 //        name : 'Team A',
 //        score: 8,
