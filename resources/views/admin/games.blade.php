@@ -56,9 +56,9 @@
                                     <tbody>
                                     @foreach($games as $game)
                                     <tr>
-                                        <td class="text-primary text-bold">
+                                        <td class="text-primary text-bold teams">
                                             <a href="{{ url('admin/games/assign/'.$game->id) }}">
-                                            {{ $game->home_team }} vs. {{ $game->away_team }}
+                                                <span id="home-team">{{ $game->home_team }}</span> vs. <span id="away-team">{{ $game->away_team }}</span> 
                                             </a>
                                         </td>
                                         <td>
@@ -96,7 +96,8 @@
                                                 <i class="fa fa-table"></i> Box Score
                                             </a>
                                             @else
-                                            <a href="{{ url('admin/games/boxscore/'.$game->id) }}" class="btn btn-xs btn-success btn-block">
+                                            <!-- {{ url('admin/games/boxscore/'.$game->id) }} -->
+                                            <a href="{{ url('admin/games/boxscore/'.$game->id) }}" id="start-game" data-id="" onclick="setFirebase({{ $game }})" class="btn btn-xs btn-success btn-block">
                                                 <i class="fa fa-send"></i> Start Game
                                             </a>
                                             @endif
@@ -126,6 +127,37 @@
 @endsection
 
 @section('js')
+    <script>
+        // Firebase Connection or Instance
+        var firebaseCon = firebase.database();
+        var dataRef = firebaseCon.ref('Game');
 
+        function setFirebase(game){
+            dataRef.child(game['id']).once('value', function(data){
+                if(data.val() == null){
+                    addGame(game);
+                    console.log('Game added!');
+                }else{
+                    console.log('Game already exists!');
+                }
+            });     
+        }
+
+        function addGame(game){
+            dataRef.child(game['id']).set({
+                home:{
+                    team: game['home_team'],
+                    score: 0,
+                    foul: 0
+                },
+                away:{
+                    team: game['away_team'],
+                    score: 0,
+                    foul: 0
+                }
+            });  
+        }
+
+    </script>
 @endsection
 

@@ -26,7 +26,7 @@
                         ->where('team',$data->away_team)
                         ->sum('pts');
                     ?>
-                    {{ $data->home_team }} <font class="text-primary score">{{ $home_score }}</font> <font class="score"> vs. </font>  <font class="text-primary score">{{ $away_score }}</font> {{ $data->away_team }}
+                    {{ $data->home_team }} <font class="text-primary score" id="score_{{ substr($data->home_team, -1) }}">{{ $home_score }}</font> <font class="score"> vs. </font>  <font class="text-primary score" id="score_{{ substr($data->away_team, -1) }}">{{ $away_score }}</font> {{ $data->away_team }}
                 </h3>
             </div>
             <div class="row">
@@ -86,7 +86,7 @@
                             $total_pts =0;
                             ?>
                             @foreach($players as $row)
-                                <tr>
+                                <tr class="players_status">
                                     <?php
                                     $player = \App\Players::find($row->player_id);
                                     ?>
@@ -100,86 +100,86 @@
                                         </a>
                                     </td>
                                     <td>
-                                        {{ $row->fg2m }}-{{ $row->fg2a }}
+                                        <span id="fg2m_{{ $player->id }}">{{ $row->fg2m }}</span>-<span id="fg2a_{{ $player->id }}">{{ $row->fg2a }}</span>
                                         <?php
                                         $total_2fm = $total_2fm + $row->fg2m;
                                         $total_2fa = $total_2fa + $row->fg2a;
                                         ?>
                                     </td>
                                     <td>
-                                        {{ $row->fg3m }}-{{ $row->fg3a }}
+                                        <span id="fg3m_{{ $player->id }}">{{ $row->fg3m }}</span>-<span id="fg3a_{{ $player->id }}">{{ $row->fg3a }}</span>
                                         <?php
                                         $total_3fm = $total_3fm + $row->fg3m;
                                         $total_3fa = $total_3fa + $row->fg3a;
                                         ?>
                                     </td>
                                     <td>
-                                        {{ $row->fg2m +  $row->fg3m }}-{{ $row->fg2a + $row->fg3a }}
+                                        <span id="fg23m_{{ $player->id }}">{{ $row->fg2m +  $row->fg3m }}</span>-<span id="fg23a_{{ $player->id }}">{{ $row->fg2a + $row->fg3a }}</span>
                                         <?php
                                         $total_fgm = $total_fgm + $row->fg2m +  $row->fg3m;
                                         $total_fga = $total_fga + $row->fg2a + $row->fg3a;
                                         ?>
                                     </td>
                                     <td>
-                                        {{ $row->ftm }}-{{ $row->fta }}
+                                        <span id="ftm_{{ $player->id }}">{{ $row->ftm }}</span>-<span id="fta_{{ $player->id }}">{{ $row->fta }}</span> 
                                         <?php
                                         $total_ftm = $total_ftm + $row->ftm;
                                         $total_fta = $total_fta + $row->fta;
                                         ?>
                                     </td>
                                     <td>
-                                        {{ $row->oreb }}
+                                        <span id="oreb_{{ $player->id }}">{{ $row->oreb }}</span>
                                         <?php $total_oreb = $total_oreb + $row->oreb; ?>
                                     </td>
                                     <td>
-                                        {{ $row->dreb }}
+                                        <span id="dreb_{{ $player->id }}">{{ $row->dreb }}</span>
                                         <?php $total_dreb = $total_dreb + $row->dreb; ?>
                                     </td>
                                     <td>
-                                        {{ $row->oreb + $row->dreb }}
+                                        <span id="treb_{{ $player->id }}">{{ $row->oreb + $row->dreb }}</span>
                                         <?php $total_reb = $total_reb + $row->oreb + $row->dreb; ?>
                                     </td>
                                     <td>
-                                        {{ $row->ast }}
+                                        <span id="ast_{{ $player->id }}">{{ $row->ast }}</span>
                                         <?php $total_ast = $total_ast + $row->ast; ?>
                                     </td>
                                     <td>
-                                        {{ $row->stl }}
+                                        <span id="stl_{{ $player->id }}">{{ $row->stl }}</span>
                                         <?php $total_stl = $total_stl + $row->stl; ?>
                                     </td>
                                     <td>
-                                        {{ $row->blk }}
+                                        <span id="blk_{{ $player->id }}">{{ $row->blk }}</span>
                                         <?php $total_blk = $total_blk + $row->blk; ?>
                                     </td>
                                     <td>
-                                        {{ $row->turnover }}
+                                        <span id="turnover_{{ $player->id }}">{{ $row->turnover }}</span>
                                         <?php $total_to = $total_to + $row->turnover; ?>
                                     </td>
                                     <td>
-                                        {{ $row->pf }}
+                                        <span id="pf_{{ $player->id }}">{{ $row->pf }}</span>
                                         <?php $total_pf = $total_pf + $row->pf; ?>
                                     </td>
                                     <td>
-                                        {{ $row->pts }}
+                                        <span id="pts_{{ $player->id }}">{{ $row->pts }}</span>
                                         <?php $total_pts = $total_pts + $row->pts; ?>
                                     </td>
                                 </tr>
                             @endforeach
                             <tr class="text-warning">
                                 <th>TOTAL</th>
-                                <th>{{ $total_2fm }}-{{$total_2fa }}</th>
-                                <th>{{ $total_3fm }}-{{$total_3fa }}</th>
-                                <th>{{ $total_fgm }}-{{$total_fga }}</th>
-                                <th>{{ $total_ftm }}-{{$total_fta }}</th>
-                                <th>{{ $total_oreb }}</th>
-                                <th>{{ $total_dreb }}</th>
-                                <th>{{ $total_reb }}</th>
-                                <th>{{ $total_ast}}</th>
-                                <th>{{ $total_stl}}</th>
-                                <th>{{ $total_blk}}</th>
-                                <th>{{ $total_to}}</th>
-                                <th>{{ $total_pf}}</th>
-                                <th>{{ $total_pts}}</th>
+                                <th><span id="{{ $data->id }}_2fm_{{ substr($data->home_team, -1) }}">{{ $total_2fm }}</span>-<span id="{{ $data->id }}_2fa_{{ substr($data->home_team, -1) }}">{{ $total_2fa }}</span></th>
+                                <th><span id="{{ $data->id }}_3fm_{{ substr($data->home_team, -1) }}">{{ $total_3fm }}</span>-<span id="{{ $data->id }}_3fa_{{ substr($data->home_team, -1) }}">{{ $total_3fa }}</span></th>
+                                <th><span id="{{ $data->id }}_fgm_{{ substr($data->home_team, -1) }}">{{ $total_fgm }}</span>-<span id="{{ $data->id }}_fga_{{ substr($data->home_team, -1) }}">{{ $total_fga }}</span></th>
+                                <th><span id="{{ $data->id }}_ftm_{{ substr($data->home_team, -1) }}">{{ $total_ftm }}</span>-<span id="{{ $data->id }}_fta_{{ substr($data->home_team, -1) }}">{{ $total_fta }}</span></th>
+                                <th><span id="{{ $data->id }}_oreb_{{ substr($data->home_team, -1) }}">{{ $total_oreb }}</span></th>
+                                <th><span id="{{ $data->id }}_dreb_{{ substr($data->home_team, -1) }}">{{ $total_dreb }}</span></th>
+                                <th><span id="{{ $data->id }}_reb_{{ substr($data->home_team, -1) }}">{{ $total_reb }}</span></th>
+                                <th><span id="{{ $data->id }}_ast_{{ substr($data->home_team, -1) }}">{{ $total_ast}}</span></th>
+                                <th><span id="{{ $data->id }}_stl_{{ substr($data->home_team, -1) }}">{{ $total_stl}}</span></th>
+                                <th><span id="{{ $data->id }}_blk_{{ substr($data->home_team, -1) }}">{{ $total_blk}}</span></th>
+                                <th><span id="{{ $data->id }}_to_{{ substr($data->home_team, -1) }}">{{ $total_to}}</span></th>
+                                <th><span id="{{ $data->id }}_pf_{{ substr($data->home_team, -1) }}">{{ $total_pf}}</span></th>
+                                <th><span id="{{ $data->id }}_pts_{{ substr($data->home_team, -1) }}">{{ $total_pts}}</span></th>
                             </tr>
                             <tr>
                                 <td></td>
@@ -264,7 +264,7 @@
                             $total_pts =0;
                             ?>
                             @foreach($players as $row)
-                                <tr>
+                                <tr class="players_status">
                                     <?php
                                     $player = \App\Players::find($row->player_id);
                                     ?>
@@ -278,86 +278,86 @@
                                         </a>
                                     </td>
                                     <td>
-                                        {{ $row->fg2m }}-{{ $row->fg2a }}
+                                        <span id="fg2m_{{ $player->id }}">{{ $row->fg2m }}</span>-<span id="fg2a_{{ $player->id }}">{{ $row->fg2a }}</span>
                                         <?php
-                                        $total_2fm = $total_2fm + $row->fg2m;
-                                        $total_2fa = $total_2fa + $row->fg2a;
+                                            $total_2fm = $total_2fm + $row->fg2m;
+                                            $total_2fa = $total_2fa + $row->fg2a;
                                         ?>
                                     </td>
                                     <td>
-                                        {{ $row->fg3m }}-{{ $row->fg3a }}
+                                        <span id="fg3m_{{ $player->id }}">{{ $row->fg3m }}</span>-<span id="fg3a_{{ $player->id }}">{{ $row->fg3a }}</span>
                                         <?php
-                                        $total_3fm = $total_3fm + $row->fg3m;
-                                        $total_3fa = $total_3fa + $row->fg3a;
+                                            $total_3fm = $total_3fm + $row->fg3m;
+                                            $total_3fa = $total_3fa + $row->fg3a;
                                         ?>
                                     </td>
                                     <td>
-                                        {{ $row->fg2m +  $row->fg3m }}-{{ $row->fg2a + $row->fg3a }}
-                                        <?php
-                                        $total_fgm = $total_fgm + $row->fg2m +  $row->fg3m;
-                                        $total_fga = $total_fga + $row->fg2a + $row->fg3a;
-                                        ?>
-                                    </td>
-                                    <td>
-                                        {{ $row->ftm }}-{{ $row->fta }}
-                                        <?php
-                                        $total_ftm = $total_ftm + $row->ftm;
-                                        $total_fta = $total_fta + $row->fta;
-                                        ?>
-                                    </td>
-                                    <td>
-                                        {{ $row->oreb }}
-                                        <?php $total_oreb = $total_oreb + $row->oreb; ?>
-                                    </td>
-                                    <td>
-                                        {{ $row->dreb }}
-                                        <?php $total_dreb = $total_dreb + $row->dreb; ?>
-                                    </td>
-                                    <td>
-                                        {{ $row->oreb + $row->dreb }}
-                                        <?php $total_reb = $total_reb + $row->oreb + $row->dreb; ?>
-                                    </td>
-                                    <td>
-                                        {{ $row->ast }}
-                                        <?php $total_ast = $total_ast + $row->ast; ?>
-                                    </td>
-                                    <td>
-                                        {{ $row->stl }}
-                                        <?php $total_stl = $total_stl + $row->stl; ?>
-                                    </td>
-                                    <td>
-                                        {{ $row->blk }}
-                                        <?php $total_blk = $total_blk + $row->blk; ?>
-                                    </td>
-                                    <td>
-                                        {{ $row->turnover }}
-                                        <?php $total_to = $total_to + $row->turnover; ?>
-                                    </td>
-                                    <td>
-                                        {{ $row->pf }}
-                                        <?php $total_pf = $total_pf + $row->pf; ?>
-                                    </td>
-                                    <td>
-                                        {{ $row->pts }}
-                                        <?php $total_pts = $total_pts + $row->pts; ?>
-                                    </td>
+                                            <span id="fg23m_{{ $player->id }}">{{ $row->fg2m +  $row->fg3m }}</span>-<span id="fg23a_{{ $player->id }}">{{ $row->fg2a + $row->fg3a }}</span>
+                                            <?php
+                                                $total_fgm = $total_fgm + $row->fg2m +  $row->fg3m;
+                                                $total_fga = $total_fga + $row->fg2a + $row->fg3a;
+                                            ?>
+                                        </td>
+                                        <td>
+                                        <span id="ftm_{{ $player->id }}">{{ $row->ftm }}</span>-<span id="fta_{{ $player->id }}">{{ $row->fta }}</span>
+                                            <?php
+                                                $total_ftm = $total_ftm + $row->ftm;
+                                                $total_fta = $total_fta + $row->fta;
+                                            ?>
+                                        </td>
+                                        <td>
+                                            <span id="oreb_{{ $player->id }}">{{ $row->oreb }}</span>
+                                            <?php $total_oreb = $total_oreb + $row->oreb; ?>
+                                        </td>
+                                        <td>
+                                            <span id="dreb_{{ $player->id }}">{{ $row->dreb }}</span>
+                                            <?php $total_dreb = $total_dreb + $row->dreb; ?>
+                                        </td>
+                                        <td>
+                                            <span id="treb_{{ $player->id }}">{{ $row->oreb + $row->dreb }}</span>
+                                            <?php $total_reb = $total_reb + $row->oreb + $row->dreb; ?>
+                                        </td>
+                                        <td>
+                                            <span id="ast_{{ $player->id }}">{{ $row->ast }}</span>
+                                            <?php $total_ast = $total_ast + $row->ast; ?>
+                                        </td>
+                                        <td>
+                                            <span id="stl_{{ $player->id }}">{{ $row->stl }}</span>
+                                            <?php $total_stl = $total_stl + $row->stl; ?>
+                                        </td>
+                                        <td>
+                                            <span id="blk_{{ $player->id }}">{{ $row->blk }}</span>
+                                            <?php $total_blk = $total_blk + $row->blk; ?>
+                                        </td>
+                                        <td>
+                                            <span id="turnover_{{ $player->id }}">{{ $row->turnover }}</span>
+                                            <?php $total_to = $total_to + $row->turnover; ?>
+                                        </td>
+                                        <td>
+                                            <span id="pf_{{ $player->id }}">{{ $row->pf }}</span>
+                                            <?php $total_pf = $total_pf + $row->pf; ?>
+                                        </td>
+                                        <td>
+                                            <span id="pts_{{ $player->id }}">{{ $row->pts }}</span>
+                                            <?php $total_pts = $total_pts + $row->pts; ?>
+                                        </td>
                                 </tr>
                             @endforeach
                             <tr class="text-warning">
                                 <th>TOTAL</th>
-                                <th>{{ $total_2fm }}-{{$total_2fa }}</th>
-                                <th>{{ $total_3fm }}-{{$total_3fa }}</th>
-                                <th>{{ $total_fgm }}-{{$total_fga }}</th>
-                                <th>{{ $total_ftm }}-{{$total_fta }}</th>
-                                <th>{{ $total_oreb }}</th>
-                                <th>{{ $total_dreb }}</th>
-                                <th>{{ $total_reb }}</th>
-                                <th>{{ $total_ast}}</th>
-                                <th>{{ $total_stl}}</th>
-                                <th>{{ $total_blk}}</th>
-                                <th>{{ $total_to}}</th>
-                                <th>{{ $total_pf}}</th>
-                                <th>{{ $total_pts}}</th>
+                                    <th><span id="{{ $data->id }}_2fm_{{ substr($data->away_team, -1) }}">{{ $total_2fm }}</span>-<span id="{{ $data->id }}_2fa_{{ substr($data->away_team, -1) }}">{{ $total_2fa }}</span></th>
+                                    <th><span id="{{ $data->id }}_3fm_{{ substr($data->away_team, -1) }}">{{ $total_3fm }}</span>-<span id="{{ $data->id }}_3fa_{{ substr($data->away_team, -1) }}">{{ $total_3fa }}</span></th>
+                                    <th><span id="{{ $data->id }}_fgm_{{ substr($data->away_team, -1) }}">{{ $total_fgm }}</span>-<span id="{{ $data->id }}_fga_{{ substr($data->away_team, -1) }}">{{ $total_fga }}</span></th>
+                                    <th><span id="{{ $data->id }}_ftm_{{ substr($data->away_team, -1) }}">{{ $total_ftm }}</span>-<span id="{{ $data->id }}_fta_{{ substr($data->away_team, -1) }}">{{ $total_fta }}</span></th>
+                                    <th><span id="{{ $data->id }}_oreb_{{ substr($data->away_team, -1) }}">{{ $total_oreb }}</span></th>
+                                    <th><span id="{{ $data->id }}_dreb_{{ substr($data->away_team, -1) }}">{{ $total_dreb }}</span></th>
+                                    <th><span id="{{ $data->id }}_reb_{{ substr($data->away_team, -1) }}">{{ $total_reb }}</span></th>
+                                    <th><span id="{{ $data->id }}_ast_{{ substr($data->away_team, -1) }}">{{ $total_ast}}</span></th>
+                                    <th><span id="{{ $data->id }}_stl_{{ substr($data->away_team, -1) }}">{{ $total_stl}}</span></th>
+                                    <th><span id="{{ $data->id }}_blk_{{ substr($data->away_team, -1) }}">{{ $total_blk}}</span></th>
+                                    <th><span id="{{ $data->id }}_to_{{ substr($data->away_team, -1) }}">{{ $total_to}}</span></th>
+                                    <th><span id="{{ $data->id }}_pf_{{ substr($data->away_team, -1) }}">{{ $total_pf}}</span></th>
+                                    <th><span id="{{ $data->id }}_pts_{{ substr($data->away_team, -1) }}">{{ $total_pts}}</span></th>
                             </tr>
                             <tr>
                                 <td></td>
@@ -398,6 +398,10 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('js')
+<script src="{{ asset('resources/assets/js/firebase-real.js') }}"></script>
 @endsection
 
 

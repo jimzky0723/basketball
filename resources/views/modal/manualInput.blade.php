@@ -18,6 +18,7 @@
                 {{ csrf_field() }}
                 <input type="hidden" id="game_id" name="game_id" />
                 <input type="hidden" id="player_id" name="player_id" />
+                <input type="hidden" id="team" name="team_name" />
                 <div class="modal-header">
                     <h4>Add Stats Manually</h4>
                 </div>
@@ -112,7 +113,7 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-default btn-sm btn-flat" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                    <button type="submit" class="btn btn-sm btn-success btn-flat"><i class="fa fa-arrows-alt"></i> Update</button>
+                    <button type="submit" onclick="calculate_manual()"; class="btn btn-sm btn-success btn-flat"><i class="fa fa-arrows-alt"></i> Update</button>
                 </div>
             </form>
         </div><!-- /.modal-content -->

@@ -33,7 +33,7 @@ $players = \App\Boxscore::where('game_id',$data->id)
     <?php
         $player = \App\Players::find($row->player_id);
     ?>
-    <a class="btn btn-icon btn-twitter" href="#basketModal" data-player="{{ $player->id }}" data-toggle="modal">
+    <a class="btn btn-icon btn-twitter" href="#basketModal" data-player="{{ $player->id }}" data-game="{{ $row->game_id }}" data-team="{{ $row->team }}" data-toggle="modal">
         <i>
             {{ $player->fname[0] }}. {{ $player->lname }}<br /><small>{{ $player->position }} | {{ $player->jersey}}</small>
         </i>
@@ -144,12 +144,18 @@ $players = \App\Boxscore::where('game_id',$data->id)
 
 <script src="{{ asset('resources/assets/js/jquery.min.js') }}"></script>
 <script src="{{ asset('resources/assets/js/bootstrap.min.js') }}"></script>
-
+<!-- Firebase Connection -->
+<script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+<script src="{{ asset('resources/assets/js/firebase-con.js')}}"></script>
+ 
 <script>
     var team = "{{ $team }}";
     var game_id = "{{ $data->id }}";
     var player_id = 0;
     var action = '';
+
+    //firebase Configuration
+    var fbaseCon = firebase.database();
 
     getScore();
 
@@ -170,6 +176,7 @@ $players = \App\Boxscore::where('game_id',$data->id)
 
     $('a[href="#basketModal"]').on('click',function(){
         player_id = $(this).data('player');
+        game_id = $(this).data('game');
     });
 
     $('.action').on('click',function(){
@@ -185,6 +192,16 @@ $players = \App\Boxscore::where('game_id',$data->id)
             type: 'GET',
             success: function(data){
                 $('.score').html(data).fadeOut().fadeIn();
+                // console.log(action);
+                // console.log(player_id);
+                var dataRef = fbaseCon.ref('boxscore');
+                dataRef.push({
+                    player_id: player_id,
+                    action: action,
+                    game: game_id,
+                    team: team
+                });
+                
             },
             error: function(){
                 $('#serverModal').modal('show');
