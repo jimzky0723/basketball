@@ -230,9 +230,4 @@ class HomeCtrl extends Controller
             'filter' => $filter
         ]);
     }
-
-    public function scoreboard($game_id)
-    {
-        return view('guest.scoreboard');
-    }
 }

@@ -21,7 +21,7 @@ Route::get('stats','HomeCtrl@stats');
 Route::post('stats','HomeCtrl@stats');
 Route::get('ranking','HomeCtrl@ranking');
 Route::post('ranking','HomeCtrl@filterRanking');
-Route::get('scoreboard/{game_id}','HomeCtrl@scoreboard');
+Route::get('admin/scoreboard/{game_id}','admin\GameCtrl@scoreboard');
 
 
 Route::get('/logout', function (){

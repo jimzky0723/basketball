@@ -400,9 +400,15 @@
                             <a target="_blank" href="{{ url('admin/games/start/'.$data->id.'/'.$data->home_team) }}" class="btn btn-success btn-sm">
                                 <i class="fa fa-bookmark"></i> Select {{ $data->home_team }}
                             </a>
+
                             <a target="_blank" href="{{ url('admin/games/start/'.$data->id.'/'.$data->away_team) }}" class="btn btn-info btn-sm">
                                 <i class="fa fa-bookmark"></i> Select {{ $data->away_team }}
                             </a>
+
+                            <a target="_blank" href="{{ url('admin/scoreboard/'.$data->id) }}" class="btn btn-warning btn-sm">
+                                <i class="fa fa-clock-o"></i> View Time and Score
+                            </a>
+
                             <a href="#deleteModal" data-toggle="modal" class="btn btn-default btn-sm">
                                 <i class="fa fa-archive"></i> End Game
                             </a>

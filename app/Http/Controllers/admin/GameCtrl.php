@@ -273,4 +273,12 @@ class GameCtrl extends Controller
             'team' => $team
         ]);
     }
+
+    public function scoreboard($game_id)
+    {
+        $game = Games::find($game_id);
+        return view('guest.scoreboard',[
+            'game' => $game
+        ]);
+    }
 }
