@@ -206,6 +206,8 @@ $players = \App\Boxscore::where('game_id',$data->id)
             },
             error: function(){
                 $('#serverModal').modal('show');
+
+                
             }
         });
     }
