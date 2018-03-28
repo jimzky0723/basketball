@@ -17,7 +17,7 @@
                     </div>
                     <div class="form-group">
                         <label>Scheduled Match</label>
-                        <input type="date" class="form-control" name="date_match" />
+                        <input type="date" class="form-control" name="date_match" value="{{ date('Y-m-d') }}" />
                     </div>
                 </div>
                 <div class="modal-footer">

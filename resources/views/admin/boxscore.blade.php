@@ -444,21 +444,29 @@
 
 @section('js')
 <script src="{{ asset('resources/assets/js/firebase-real.js') }}"></script>
+<?php
+    $home_score = \App\Http\Controllers\GameCtrl::getScore($data->id,$data->home_team);
+    $away_score = \App\Http\Controllers\GameCtrl::getScore($data->id,$data->away_team);
+?>
 <script>
-    {{--var fbaseCon = firebase.database();--}}
-    {{--var dataRef = fbaseCon.ref('Game');--}}
-    {{--dataRef.child("{{ $data->id }}").set({--}}
-        {{--home:{--}}
-            {{--team: "{{ $data->home_team }}",--}}
-            {{--score: "{{ $data->home_score }}",--}}
-            {{--foul: 0--}}
-        {{--},--}}
-        {{--away:{--}}
-            {{--team: "{{ $data->away_team }}",--}}
-            {{--score: "{{ $data->away_score }}",--}}
-            {{--foul: 0--}}
-        {{--}--}}
-    {{--});--}}
+
+    var fbaseCon = firebase.database();
+    var dataRef = fbaseCon.ref('Game');
+
+    dataRef.child("{{ $data->id }}").set({
+         home:{
+             team: "{{ $data->home_team }}",
+             score: "{{ $home_score }}",
+             foul: 0
+         },
+         away:{
+            team: "{{ $data->away_team }}",
+            score: "{{ $away_score }}",
+             foul: 0
+         }
+     });
+
+
 
     $('a[href="#manualInput"]').on('click',function(){
         var game_id = $(this).data('game');

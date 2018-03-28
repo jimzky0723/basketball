@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class GameCtrl extends Controller
 {
-    function getScore($game_id,$team)
+    static function getScore($game_id,$team)
     {
         $score = Boxscore::where('game_id',$game_id)
                 ->where('team',$team)

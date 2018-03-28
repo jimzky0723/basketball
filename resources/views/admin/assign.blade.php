@@ -151,6 +151,9 @@
                 <button data-toggle="modal" data-target="#deleteModal" class="btn btn-flat btn-danger">
                     <i class="fa fa-trash"></i> Delete Game
                 </button>
+                <a href="{{ url('admin/games/boxscore/'.$data->id) }}" class="btn btn-success btn-flat">
+                    <i class="fa fa-send"></i> Start Game
+                </a>
             </div>
             <div class="clearfix"></div>
         </div>
@@ -169,6 +172,50 @@
 @endsection
 
 @section('js')
+<script>
+    function filterName()
+    {
+        // Declare variables
+        var input, filter, ul, li, a, i;
+        input = document.getElementById('home_search');
+        filter = input.value.toUpperCase();
+        ul = document.getElementById("home_div");
+        li = ul.getElementsByTagName("li");
 
+        // Loop through all list items, and hide those who don't match the search query
+        for (i = 0; i < li.length; i++) {
+            //a = li[i].getElementsByTagName("a")[0];
+            a = li[i].innerHTML;
+            if (a.toUpperCase().indexOf(filter) > -1) {
+                li[i].style.display = "";
+            } else {
+                li[i].style.display = "none";
+            }
+        }
+        return li.length;
+    }
+
+    function filterNameAway()
+    {
+        // Declare variables
+        var input, filter, ul, li, a, i;
+        input = document.getElementById('away_search');
+        filter = input.value.toUpperCase();
+        ul = document.getElementById("away_div");
+        li = ul.getElementsByTagName("li");
+
+        // Loop through all list items, and hide those who don't match the search query
+        for (i = 0; i < li.length; i++) {
+            //a = li[i].getElementsByTagName("a")[0];
+            a = li[i].innerHTML;
+            if (a.toUpperCase().indexOf(filter) > -1) {
+                li[i].style.display = "";
+            } else {
+                li[i].style.display = "none";
+            }
+        }
+        return li.length;
+    }
+</script>
 @endsection
 

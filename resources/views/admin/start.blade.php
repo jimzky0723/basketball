@@ -147,7 +147,7 @@ $players = \App\Boxscore::where('game_id',$data->id)
 <!-- Firebase Connection -->
 <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
 <script src="{{ asset('resources/assets/js/firebase-con.js')}}"></script>
- 
+
 <script>
     var team = "{{ $team }}";
     var game_id = "{{ $data->id }}";
@@ -201,7 +201,12 @@ $players = \App\Boxscore::where('game_id',$data->id)
                     game: game_id,
                     team: team
                 });
-                
+                dataRef.on('child_added',function(data){
+                    console.log(data.key);
+                   setTimeout(function(){
+                       dataRef.child(data.key).remove();
+                   }, 1000);
+                });
 
             },
             error: function(){

@@ -11,14 +11,18 @@
                 </div>
                 <div class="modal-body">
                     <div style="max-height: 600px;overflow-y: scroll">
-                        <div class="list-group">
+                        <input type="text" id="home_search" onkeyup="filterName()" class="form-control" placeholder="Search Name..." />
+                        <hr />
+                        <ul class="list-group" id="home_div">
                             @foreach($list as $row)
-                            <label class="list-group-item clearfix">
-                                <input type="checkbox" value="{{ $row->id }}" name="players[]"> <span class="title-info">{{ $row->lname }}, {{ $row->fname }}</span>,
-                                <span class="text-primary">{{ $row->position }} </span> | {{ $row->jersey }}
-                            </label>
+                            <li class="list-group-item clearfix">
+                                <label class="">
+                                    <input type="checkbox" value="{{ $row->id }}" name="players[]"> <span class="title-info">{{ $row->lname }}, {{ $row->fname }}</span>,
+                                    <span class="text-primary">{{ $row->position }} </span> | {{ $row->jersey }}
+                                </label>
+                            </li>
                             @endforeach
-                        </div>
+                        </ul>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -43,14 +47,19 @@
                 </div>
                 <div class="modal-body">
                     <div style="max-height: 600px;overflow-y: scroll">
-                        <div class="list-group">
+                        <input type="text" id="away_search" onkeyup="filterNameAway()" class="form-control" placeholder="Search Name..." />
+                        <hr />
+                        <ul class="list-group" id="away_div">
                             @foreach($list as $row)
-                                <label class="list-group-item clearfix">
-                                    <input type="checkbox" value="{{ $row->id }}" name="players[]"> <span class="title-info">{{ $row->lname }}, {{ $row->fname }}</span>,
-                                    <span class="text-primary">{{ $row->position }} </span> | {{ $row->jersey }}
-                                </label>
+                                <li class="list-group-item clearfix">
+                                    <label>
+                                        <input type="checkbox" value="{{ $row->id }}" name="players[]"> <span class="title-info">{{ $row->lname }}, {{ $row->fname }}</span>,
+                                        <span class="text-primary">{{ $row->position }} </span> | {{ $row->jersey }}
+                                    </label>
+                                </li>
+
                             @endforeach
-                        </div>
+                        </ul>
                     </div>
                 </div>
                 <div class="modal-footer">

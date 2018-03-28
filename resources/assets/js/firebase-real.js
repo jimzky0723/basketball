@@ -1,4 +1,3 @@
-
 // Firebase cloud database instance
 var fbaseCon = firebase.database();
 //Firebase get boxscore & game references
@@ -167,6 +166,7 @@ function total_calculation(count, player_id, game, team = '', action = []){
 }
 
 dataRef.on('child_added', function(data){
+
     var team = data.val().team;
 
     fg2m = $('.players_status').find('td span#fg2m_' + data.val().player_id).html();
@@ -205,7 +205,6 @@ dataRef.on('child_added', function(data){
     t_pf =  $('.text-warning').find('th span#'+ data.val().game +'_pf_' + team.substr(team.length-1)).html();
     t_pts =  $('.text-warning').find('th span#'+ data.val().game +'_pts_' + team.substr(team.length-1)).html();
 
-    // get_player_boxscore(data,team);
 
     if(data.val().action == 'fg2m'){
        
@@ -297,9 +296,5 @@ dataRef.on('child_added', function(data){
         var actions = ['pf', 'pf'];
         addToView(actionsInt, actions, data.val().player_id, 1, team.substr(team.length-1), data.val().game);
     }
- //   dataRef.child(data.key).remove();
-    setTimeout(function(){
-        dataRef.child(data.key).remove();
-    }, 2000);
-    
+
 }); 
