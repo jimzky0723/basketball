@@ -55,6 +55,10 @@ class PlayerCtrl extends Controller
 
 
         $match = array('unique_id' => $unique);
+        $date_expired = '0000-00-00';
+        if($req->status==1){
+            $date_expired = date('Y-m-d',strtotime("+6 month"));
+        }
         Players::updateOrCreate($match,
             [
                 'fname'=>$req->fname,
@@ -68,7 +72,8 @@ class PlayerCtrl extends Controller
                 'section'=>$req->section,
                 'prof_pic' => $prof_pic,
                 'portrait_pic' => $portrait_pic,
-                'status' => $req->status
+                'status' => $req->status,
+                'date_expired' => $date_expired
             ]);
 
         return redirect()->back()->with('status','saved');
@@ -157,7 +162,10 @@ class PlayerCtrl extends Controller
             Players::updateOrCreate($match,['portrait_pic'=>$portrait_pic]);
         }
 
-
+        $date_expired = '0000-00-00';
+        if($req->status==1){
+            $date_expired = date('Y-m-d',strtotime("+6 month"));
+        }
         Players::updateOrCreate($match,
             [
                 'unique_id' => $new_unique,
@@ -170,7 +178,8 @@ class PlayerCtrl extends Controller
                 'height'=>$req->height,
                 'weight'=>$req->weight,
                 'section'=>$req->section,
-                'status'=>$req->status
+                'status'=>$req->status,
+                'date_expired' => $date_expired
             ]);
 
         return redirect()->back()->with('status','updated');

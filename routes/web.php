@@ -13,12 +13,15 @@
 
 Route::get('/','HomeCtrl@index');
 Route::get('/players','HomeCtrl@players');
+Route::post('/players','HomeCtrl@filterPlayers');
 Route::get('/player/{player_id}','HomeCtrl@profile');
 Route::get('/score','HomeCtrl@score');
 Route::get('/score/boxscore/{game_id}','HomeCtrl@boxscore');
 Route::get('stats','HomeCtrl@stats');
 Route::post('stats','HomeCtrl@stats');
 Route::get('ranking','HomeCtrl@ranking');
+Route::post('ranking','HomeCtrl@filterRanking');
+Route::get('admin/scoreboard/{game_id}','admin\GameCtrl@scoreboard');
 
 
 Route::get('/logout', function (){
@@ -65,6 +68,9 @@ Route::post('admin/committee','admin\CommCtrl@store');
 
 Route::post('admin/home/fb','admin\NewsCtrl@fbPost');
 Route::post('admin/home/award','admin\NewsCtrl@awardPost');
+Route::post('admin/home/delete/post','admin\NewsCtrl@deletePost');
+Route::post('admin/home/update/post','admin\NewsCtrl@updatePost');
+Route::get('admin/home/post/{id}','admin\NewsCtrl@getPost');
 
 Route::get('admin/awardee','admin\AwardCtrl@index');
 Route::post('admin/awardee/{type}','admin\AwardCtrl@store');

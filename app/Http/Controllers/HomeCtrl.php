@@ -26,13 +26,25 @@ class HomeCtrl extends Controller
         ]);
     }
 
+    public function filterPlayers(Request $req)
+    {
+        $filter = $req->filter;
+        Session::put('filterPlayer',$filter);
+        return self::players();
+    }
+
     public function players()
     {
-        $data = Players::orderBy('lname','asc')
-            ->paginate(20);
+        $data = Players::orderBy('lname','asc');
+        $filter = Session::get('filterPlayer');
+        if(isset($filter)){
+            $data = $data->where('position','like',"%$filter%");
+        }
+        $data = $data->paginate(20);
         return view('guest.players',[
             'title' => 'Players',
-            'data' => $data
+            'data' => $data,
+            'filter' => $filter
         ]);
     }
 
@@ -102,6 +114,13 @@ class HomeCtrl extends Controller
         ]);
     }
 
+    public function filterRanking(Request $req)
+    {
+        $filter = $req->filter;
+        Session::put('filterRanking',$filter);
+        return self::ranking();
+    }
+
     public function ranking()
     {
 
@@ -115,41 +134,58 @@ class HomeCtrl extends Controller
             DB::raw('SUM(turnover) as turnover'),
             DB::raw('(SUM(oreb)+SUM(dreb)) as reb'),
             DB::raw('(SUM(pts) + (SUM(oreb)+SUM(dreb)) + SUM(ast) + SUM(stl) + SUM(blk))-(((SUM(fg2a)+SUM(fg3a)) - (SUM(fg3m)+SUM(fg2m))) + (SUM(fta) - SUM(ftm)) + (SUM(turnover))) as eff')
-        )
+        );
+
+        $filter = Session::get('filterRanking');
+        if(isset($filter)){
+            $stats = $stats->leftJoin('players','players.id','=','boxscore.player_id')
+                    ->where('players.position','like',"%$filter%");
+        }
+
+        $stats = $stats
             ->orderBy('eff','desc')
             ->groupBy('player_id')
             ->limit(30)
             ->get();
         return view('guest.ranking',[
             'title' => 'TOP 30 Players: Overall Stats',
-            'data' => $stats
+            'data' => $stats,
+            'filter' => $filter
         ]);
     }
 
     public function stats(Request $req)
     {
         $sort = 'scoring';
+        $filter = '';
         if($req->sort){
             $sort = $req->sort;
         }
+
+        if($req->filter){
+            $filter = $req->filter;
+        }
+
         $data = Boxscore::select(
-            'player_id',
-            DB::raw('count(team) as gp'),
-            DB::raw('SUM(pts)/count(team) as pts'),
-            DB::raw('SUM(ast)/count(team) as ast'),
-            DB::raw('SUM(stl)/count(team) as stl'),
-            DB::raw('SUM(blk)/count(team) as blk'),
-            DB::raw('SUM(fg2m)/count(team) as fg2m'),
-            DB::raw('SUM(fg2a)/count(team) as fg2a'),
-            DB::raw('SUM(fg3m)/count(team) as fg3m'),
-            DB::raw('SUM(fg3a)/count(team) as fg3a'),
-            DB::raw('SUM(win)/count(team) as win'),
-            DB::raw('(SUM(fg2m) + SUM(fg3m))/(SUM(fg2a) + SUM(fg3a)) as fg_per'),
-            DB::raw('(SUM(fg3m))/(SUM(fg3a)) as fg3_per'),
-            DB::raw('(SUM(ftm))/(SUM(fta)) as ft_per'),
-            DB::raw('SUM(turnover)/count(team) as turnover'),
-            DB::raw('((SUM(oreb)+SUM(dreb)))/count(team) as reb')
-        );
+                    'player_id',
+                    DB::raw('count(team) as gp'),
+                    DB::raw('SUM(pts)/count(team) as pts'),
+                    DB::raw('SUM(ast)/count(team) as ast'),
+                    DB::raw('SUM(stl)/count(team) as stl'),
+                    DB::raw('SUM(blk)/count(team) as blk'),
+                    DB::raw('SUM(fg2m)/count(team) as fg2m'),
+                    DB::raw('SUM(fg2a)/count(team) as fg2a'),
+                    DB::raw('SUM(fg3m)/count(team) as fg3m'),
+                    DB::raw('SUM(fg3a)/count(team) as fg3a'),
+                    DB::raw('SUM(win)/count(team) as win'),
+                    DB::raw('(SUM(fg2m) + SUM(fg3m))/(SUM(fg2a) + SUM(fg3a)) as fg_per'),
+                    DB::raw('(SUM(fg3m))/(SUM(fg3a)) as fg3_per'),
+                    DB::raw('(SUM(ftm))/(SUM(fta)) as ft_per'),
+                    DB::raw('SUM(turnover)/count(team) as turnover'),
+                    DB::raw('((SUM(oreb)+SUM(dreb)))/count(team) as reb')
+                )
+                ->leftJoin('players','players.id','=','boxscore.player_id')
+                ->where('players.position','like',"%$filter%");
 
         $title = 'Points Per Game Statistics';
         $col = 'pts';
@@ -190,7 +226,8 @@ class HomeCtrl extends Controller
         return view('guest.stats',[
             'title' => $title,
             'data' => $data,
-            'sort' => $col
+            'sort' => $col,
+            'filter' => $filter
         ]);
     }
 }

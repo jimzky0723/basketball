@@ -202,6 +202,7 @@ $players = \App\Boxscore::where('game_id',$data->id)
                     team: team
                 });
                 
+
             },
             error: function(){
                 $('#serverModal').modal('show');
