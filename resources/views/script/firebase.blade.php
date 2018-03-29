@@ -29,18 +29,6 @@
     var gameRef = dbRef.ref('Game');
     var home = gameRef.child("{{ $game->id }}").child('home');
     var away = gameRef.child("{{ $game->id }}").child('away');
-//    home.set({
-//        name : 'Team A',
-//        score: 8,
-//        foul: 0
-//    });
-//
-//
-//    away.set({
-//        name : 'Team B',
-//        score: 12,
-//        foul: 0
-//    });
 
 
     home.once('value',function(snapshot){

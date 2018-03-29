@@ -14,7 +14,7 @@
     <link href="{{ asset('resources/assets/css/font-awesome.min.css') }}" rel="stylesheet">
     <link href="{{ asset('resources/assets/css/style.css') }}" rel="stylesheet">
     <title>
-        {{ $game->home_team }} vs {{ $game->away_team }}
+        Scoreboard: {{ $game->home_team }} vs {{ $game->away_team }}
     </title>
 
     <style>

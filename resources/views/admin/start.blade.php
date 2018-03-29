@@ -3,13 +3,29 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>{{ $data->home_team }} vs. {{ $data->away_team }}</title>
+    <title>START: {{ $data->home_team }} vs. {{ $data->away_team }}</title>
+    <link rel="icon" href="{{ asset('resources/img/favicon.png') }}">
     <link href="{{ asset('resources/assets/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('resources/assets/css/font-awesome.min.css') }}" rel="stylesheet">
     <link href="{{ asset('resources/assets/css/game.css') }}" rel="stylesheet">
+    <link href="{{ asset('resources/assets/css/style.css') }}" rel="stylesheet">
     <style>
         .team {
-            color: #2786bf !important;
+            color: #fff !important;
+            font-size:1.5em;
+            background: #333;
+            padding: 5px 10px;
+        }
+        .score {
+            font-size:2.2em;
+            background: #333;
+            padding: 3px 10px;
+        }
+        .home_score {
+            color: #deea47 !important;
+        }
+        .away_score {
+            color: #ea974c !important;
         }
         .title-info {
             color: #00ca6d;
@@ -19,26 +35,69 @@
         .columns {
             padding:0px !important;
         }
+
     </style>
 </head>
 <body>
+<header>
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-static-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">{{ $team }}</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                {{--<ul class="nav navbar-nav">--}}
+                    {{--<li class="active"><a href="#">Home</a></li>--}}
+                    {{--<li><a href="#about">About</a></li>--}}
+                    {{--<li><a href="#contact">Contact</a></li>--}}
+                    {{--<li class="dropdown">--}}
+                        {{--<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>--}}
+                        {{--<ul class="dropdown-menu">--}}
+                            {{--<li><a href="#">Action</a></li>--}}
+                            {{--<li><a href="#">Another action</a></li>--}}
+                            {{--<li><a href="#">Something else here</a></li>--}}
+                            {{--<li role="separator" class="divider"></li>--}}
+                            {{--<li class="dropdown-header">Nav header</li>--}}
+                            {{--<li><a href="#">Separated link</a></li>--}}
+                            {{--<li><a href="#">One more separated link</a></li>--}}
+                        {{--</ul>--}}
+                    {{--</li>--}}
+                {{--</ul>--}}
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#">
+                            <span class="team">{{ $data->home_team }}</span> <span class="score home_score digital-score">00</span>
+                            vs
+                            <span class="score away_score digital-score">00</span> <span class="team">{{ $data->away_team }}</span>
+                        </a></li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+
+</header>
 <?php
 $players = \App\Boxscore::where('game_id',$data->id)
     ->where('team',$team)
     ->get();
 ?>
 <div id="social-platforms">
-    <h1 class="team">{{ $team }} | <font class="title-info score">0</font> </h1>
     @foreach($players as $row)
-    <?php
+        <?php
         $player = \App\Players::find($row->player_id);
-    ?>
-    <a class="btn btn-icon btn-twitter" href="#basketModal" data-player="{{ $player->id }}" data-game="{{ $row->game_id }}" data-team="{{ $row->team }}" data-toggle="modal">
-        <i>
-            {{ $player->fname[0] }}. {{ $player->lname }}<br /><small>{{ $player->position }} | {{ $player->jersey}}</small>
-        </i>
-        <span><img src="{{ url('public/upload/profile/'.$player->prof_pic.'?img='.date('YmdHis')) }}" width="80px" class="img-responsive" /></span>
-    </a>
+        ?>
+        <a class="btn btn-icon btn-twitter" href="#basketModal" data-player="{{ $player->id }}" data-game="{{ $row->game_id }}" data-team="{{ $row->team }}" data-toggle="modal" style="background:#fff;">
+            <i>
+                {{ $player->fname[0] }}. {{ $player->lname }}<br /><small>{{ $player->position }} | {{ $player->jersey}}</small>
+            </i>
+            <span><img src="{{ url('public/upload/profile/'.$player->prof_pic.'?img='.date('YmdHis')) }}" width="80px" class="img-responsive" /></span>
+        </a>
     @endforeach
 </div>
 </body>
@@ -157,6 +216,49 @@ $players = \App\Boxscore::where('game_id',$data->id)
     //firebase Configuration
     var fbaseCon = firebase.database();
 
+    var gameRef = fbaseCon.ref('Game');
+    var home = gameRef.child("{{ $data->id }}").child('home');
+    var away = gameRef.child("{{ $data->id }}").child('away');
+
+    home.once('value',function(snapshot){
+        if(snapshot.hasChild('score')){
+            var data = snapshot.val();
+            var score = (data.score<10) ? '0' + data.score: data.score;
+            $('.home_score').html(score);
+        }else{
+            home.set({
+                name : "{{ $data->home_team }}",
+                score: 0,
+                foul: 0
+            });
+        }
+
+    });
+
+    away.once('value',function(snapshot){
+        if(snapshot.hasChild('score')){
+            var data = snapshot.val();
+            var score = (data.score<10) ? '0' + data.score: data.score;
+            $('.away_score').html(score);
+        }else{
+            away.set({
+                name : "{{ $data->away_team }}",
+                score: 0,
+                foul: 0
+            });
+        }
+
+    });
+
+    gameRef.on('child_changed',function(snapshot){
+        var data = snapshot.val();
+        var home_score = (data.home.score<10) ? '0' + data.home.score: data.home.score;
+        var away_score = (data.away.score<10) ? '0' + data.away.score: data.away.score;
+        $('.home_score').html(home_score);
+        $('.away_score').html(away_score);
+    });
+
+
     getScore();
 
     function getScore()
@@ -166,7 +268,7 @@ $players = \App\Boxscore::where('game_id',$data->id)
             url: url+'/'+game_id+'/'+team,
             type: 'GET',
             success: function(data){
-                $('.score').html(data).fadeOut().fadeIn();
+                //$('.score').html(data).fadeOut().fadeIn();
             },
             error: function(){
                 $('#serverModal').modal('show');
@@ -191,7 +293,7 @@ $players = \App\Boxscore::where('game_id',$data->id)
             url: url+'/'+game_id+'/'+player_id+'/'+action+'/'+team,
             type: 'GET',
             success: function(data){
-                $('.score').html(data).fadeOut().fadeIn();
+//                $('.score').html(data).fadeOut().fadeIn();
                 // console.log(action);
                 // console.log(player_id);
                 var dataRef = fbaseCon.ref('boxscore');
@@ -211,8 +313,6 @@ $players = \App\Boxscore::where('game_id',$data->id)
             },
             error: function(){
                 $('#serverModal').modal('show');
-
-                
             }
         });
     }
