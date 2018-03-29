@@ -253,7 +253,7 @@ class GameCtrl extends Controller
             'pts' => $pts
         );
         Boxscore::updateOrCreate($match,$data);
-        self::calculate($req->game_id);
+        self::calculate($req->game_id,0);
         return redirect()->back();
     }
 
