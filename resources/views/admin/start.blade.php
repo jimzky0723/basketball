@@ -303,6 +303,7 @@ $players = \App\Boxscore::where('game_id',$data->id)
                     game: game_id,
                     team: team
                 });
+
                 dataRef.on('child_added',function(data){
                     console.log(data.key);
                    setTimeout(function(){
