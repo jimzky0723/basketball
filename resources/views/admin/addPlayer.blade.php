@@ -163,6 +163,16 @@
                                             </select>
                                         </td>
                                     </tr>
+                                    <tr class="has-group">
+                                        <td>Payment :</td>
+                                        <td>
+                                            <label>
+                                                <input type="checkbox" name="payment"/>
+                                                Put check if payment is done!
+                                            </label>
+
+                                        </td>
+                                    </tr>
 
                                     <tr>
                                         <td></td>
