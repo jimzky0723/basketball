@@ -17,10 +17,12 @@
                                     <option {{ ($filter=='PF') ? 'selected':'' }} value="PF">Power Forward</option>
                                     <option {{ ($filter=='C') ? 'selected':'' }} value="C">Center</option>
                                 </select>
+                                <input type="text" class="form-control" name="player" placeholder="Search name..." value="{{ Session::get('searchPlayer') }}">
                                 <button type="submit" class="btn btn-success btn-sm btn-flat">
                                     <i class="fa fa-sort"></i> Filter
                                 </button>
                             </div>
+
                         </form>
                     </div>
                     <h3>Players</h3>

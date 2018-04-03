@@ -8,6 +8,7 @@ use App\Players;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class PlayerCtrl extends Controller
 {
@@ -19,12 +20,30 @@ class PlayerCtrl extends Controller
 
     public function index()
     {
-        $data = Players::orderBy('lname','asc')
-                ->paginate(20);
+        $data = Players::orderBy('lname','asc');
+        $name = Session::get('searchPlayer');
+        if(isset($name))
+        {
+            $data = $data->where(function($q) use($name){
+                $q = $q->where('fname','like',"%$name%")
+                    ->orwhere('lname','like',"%$name%")
+                    ->orwhere('mname','like',"%$name%")
+                    ->orwhere(DB::raw('concat(fname," ",mname," ",lname)'),'like',"%$name%")
+                    ->orwhere(DB::raw('concat(fname," ",lname)'),'like',"%$name%")
+                    ->orwhere(DB::raw('concat(lname," ",fname," ",mname)'),'like',"%$name%");
+            });
+        }
+        $data = $data->paginate(20);
         return view('admin.players',[
             'title' => 'List of Players',
             'data' => $data
         ]);
+    }
+
+    public function searchPlayer(Request $req)
+    {
+        Session::put('searchPlayer',$req->player);
+        return self::index();
     }
 
     public function create()
@@ -56,7 +75,7 @@ class PlayerCtrl extends Controller
 
         $match = array('unique_id' => $unique);
         $date_expired = '0000-00-00';
-        if($req->status==1){
+        if($req->status==1 && $req->payment){
             $date_expired = date('Y-m-d',strtotime("+6 month"));
         }
         Players::updateOrCreate($match,
@@ -163,8 +182,11 @@ class PlayerCtrl extends Controller
         }
 
         $date_expired = '0000-00-00';
-        if($req->status==1){
+        if($req->status==1 && $req->payment){
             $date_expired = date('Y-m-d',strtotime("+6 month"));
+            Players::updateOrCreate($match,[
+                'date_expired' => $date_expired
+            ]);
         }
         Players::updateOrCreate($match,
             [
@@ -178,8 +200,7 @@ class PlayerCtrl extends Controller
                 'height'=>$req->height,
                 'weight'=>$req->weight,
                 'section'=>$req->section,
-                'status'=>$req->status,
-                'date_expired' => $date_expired
+                'status'=>$req->status
             ]);
 
         return redirect()->back()->with('status','updated');

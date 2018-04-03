@@ -34,7 +34,7 @@
                     @if(isset($week))
                     <?php
                         $player = \App\Players::find($week->player_id);
-                        $week_stats = \App\Http\Controllers\ParamCtrl::getPlayerStats($week->player_id);
+                        $week_stats = \App\Http\Controllers\ParamCtrl::getWeekPlayerByWeek($week->award_date,$week->player_id);
                     ?>
                     <div class="thumbnail">
                         <img src="{{ url('pictures/profile/'.$player->prof_pic) }}" class="img-responsive" />

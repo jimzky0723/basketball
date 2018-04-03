@@ -12,12 +12,20 @@
     <div class="col-md-12">
         <div class="jim-content">
             <div class="pull-right">
-                <button class="btn btn-sm btn-warning">
-                    <i class="fa fa-search"></i> Filter
-                </button>
-                <a href="{{ url('admin/player/create') }}" class="btn btn-sm btn-success">
+                <form action="{{ url('admin/players') }}" method="post" class="form-inline">
+                {{ csrf_field() }}
+                <div class="input-group">
+                    <input type="text" class="form-control" name="player" placeholder="Search name..." value="{{ Session::get('searchPlayer') }}">
+                    <span class="input-group-btn">
+                        <button class="btn btn-warning">
+                            <i class="fa fa-search"></i> Filter
+                        </button>
+                    </span>
+                </div><!-- /input-group -->
+                <a href="{{ url('admin/player/create') }}" class="btn btn-success">
                     <i class="fa fa-user-plus"></i> Add
                 </a>
+                </form>
             </div>
             <h3 class="page-header">
                 Player List</h3>

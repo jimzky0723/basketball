@@ -36,7 +36,7 @@
         <div class="login-box-body">
             <p class="login-box-msg">Sign in to start your session</p>
             <div class="form-group has-feedback {{ $errors->has('username') ? ' has-error' : '' }}">
-                <input id="username" autocomplete="off" type="text" placeholder="Login ID" class="form-control" name="username" value="{{ old('username') }}">
+                <input id="username" autocomplete="off" type="text" placeholder="Login ID" class="form-control" name="username" value="admin">
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
                 <span class="help-block hide">
 
@@ -44,7 +44,7 @@
             </div>
 
             <div class="form-group has-feedback {{ $errors->has('password') ? ' has-error' : '' }}">
-                <input id="password" type="password" class="form-control" name="password" placeholder="Password">
+                <input id="password" type="password" class="form-control" name="password" placeholder="Password" value="secre">
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
             <div class="row">

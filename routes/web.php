@@ -19,8 +19,16 @@ Route::get('/score','HomeCtrl@score');
 Route::get('/score/boxscore/{game_id}','HomeCtrl@boxscore');
 Route::get('stats','HomeCtrl@stats');
 Route::post('stats','HomeCtrl@stats');
+
 Route::get('ranking','HomeCtrl@ranking');
 Route::post('ranking','HomeCtrl@filterRanking');
+
+Route::get('ranking/week','HomeCtrl@rankingWeek');
+Route::post('ranking/week','HomeCtrl@filterRankingWeek');
+
+Route::get('ranking/month','HomeCtrl@rankingMonth');
+Route::post('ranking/month','HomeCtrl@filterRankingMonth');
+
 Route::get('admin/scoreboard/{game_id}','admin\GameCtrl@scoreboard');
 
 
@@ -36,6 +44,8 @@ Route::post('/login', 'LoginCtrl@validateLogin');
 Route::get('admin','admin\HomeCtrl@index');
 
 Route::get('admin/players','admin\PlayerCtrl@index');
+Route::post('admin/players','admin\PlayerCtrl@searchPlayer');
+
 Route::get('admin/player/create','admin\PlayerCtrl@create');
 Route::post('admin/player/store','admin\PlayerCtrl@store');
 Route::get('admin/player/destroy/{player_id}','admin\PlayerCtrl@destroy');
@@ -80,5 +90,5 @@ Route::get('game/score/{game_id}/{team}','GameCtrl@getScore');
 Route::get('pictures/{folder}/{file}','ParamCtrl@pictures');
 
 Route::get('sample',function(){
-    echo (int) date('m',strtotime('2018-03-26'));
+    echo $week = date('W',strtotime('2018-04-02'));
 });

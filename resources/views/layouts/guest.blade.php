@@ -92,7 +92,14 @@
                 <li><a href="{{ url('score') }}">Scores</a></li>
                 <li><a href="{{ url('players') }}">Players</a></li>
                 <li><a href="{{ url('stats') }}">Stats</a></li>
-                <li><a href="{{ url('ranking') }}">Ranking</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Ranking <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ url('ranking') }}">Overall</a></li>
+                        <li><a href="{{ url('ranking/week') }}">Weekly</a></li>
+                        <li><a href="{{ url('ranking/month') }}">Monthly</a></li>
+                    </ul>
+                </li>
             </ul>
             <ul class="nav navbar-nav pull-right">
                 <li style="background: #67bfa4;"><a href="{{ url('/admin') }}" style="color:#fff !important;"><i class="fa fa-gear"></i> Panel</a></li>

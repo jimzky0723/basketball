@@ -30,6 +30,7 @@ class HomeCtrl extends Controller
     {
         $filter = $req->filter;
         Session::put('filterPlayer',$filter);
+        Session::put('searchPlayer',$req->player);
         return self::players();
     }
 
@@ -39,6 +40,18 @@ class HomeCtrl extends Controller
         $filter = Session::get('filterPlayer');
         if(isset($filter)){
             $data = $data->where('position','like',"%$filter%");
+        }
+        $name = Session::get('searchPlayer');
+        if(isset($name))
+        {
+            $data = $data->where(function($q) use($name){
+                $q = $q->where('fname','like',"%$name%")
+                    ->orwhere('lname','like',"%$name%")
+                    ->orwhere('mname','like',"%$name%")
+                    ->orwhere(DB::raw('concat(fname," ",mname," ",lname)'),'like',"%$name%")
+                    ->orwhere(DB::raw('concat(fname," ",lname)'),'like',"%$name%")
+                    ->orwhere(DB::raw('concat(lname," ",fname," ",mname)'),'like',"%$name%");
+            });
         }
         $data = $data->paginate(20);
         return view('guest.players',[
@@ -151,6 +164,112 @@ class HomeCtrl extends Controller
             'title' => 'TOP 30 Players: Overall Stats',
             'data' => $stats,
             'filter' => $filter
+        ]);
+    }
+
+    public function filterRankingWeek(Request $req)
+    {
+        $filter = array(
+            'filter' => $req->filter,
+            'week' => $req->week
+        );
+        Session::put('filterRankingWeek',$filter);
+        return self::rankingWeek();
+    }
+
+    public function rankingWeek()
+    {
+        $tmp_week = Games::select(DB::raw('WEEK(date_match) week'))
+            ->groupBy('week')
+            ->orderBy('id','desc')
+            ->first();
+        $tmp_week = $tmp_week->week;
+
+        $stats = Boxscore::select(
+            'player_id',
+            DB::raw('count(team) as gp'),
+            DB::raw('SUM(pts) as pts'),
+            DB::raw('SUM(ast) as ast'),
+            DB::raw('SUM(stl) as stl'),
+            DB::raw('SUM(blk) as blk'),
+            DB::raw('SUM(turnover) as turnover'),
+            DB::raw('(SUM(oreb)+SUM(dreb)) as reb'),
+            DB::raw('(SUM(pts) + (SUM(oreb)+SUM(dreb)) + SUM(ast) + SUM(stl) + SUM(blk))-(((SUM(fg2a)+SUM(fg3a)) - (SUM(fg3m)+SUM(fg2m))) + (SUM(fta) - SUM(ftm)) + (SUM(turnover))) as eff')
+        );
+
+        $filter = Session::get('filterRankingWeek');
+        $week = isset($filter['week']) ? $filter['week']: $tmp_week;
+        if(isset($filter)){
+            $position = $filter['filter'];
+            $stats = $stats->leftJoin('players','players.id','=','boxscore.player_id')
+                ->where('players.position','like',"%$position%");
+        }
+
+        $stats = $stats->leftJoin('games','games.id','=','boxscore.game_id')
+            ->where(DB::raw('WEEK(games.date_match)'),($week))
+            ->orderBy('eff','desc')
+            ->groupBy('player_id')
+            ->limit(15)
+            ->get();
+        return view('guest.rankingweek',[
+            'title' => 'TOP 15 Players: Week',
+            'data' => $stats,
+            'filter' => $filter['filter'],
+            'week' => $week
+        ]);
+    }
+
+    public function filterRankingMonth(Request $req)
+    {
+        $filter = array(
+            'filter' => $req->filter,
+            'month' => $req->month
+        );
+        Session::put('filterRankingMonth',$filter);
+
+        return self::rankingMonth();
+    }
+
+    public function rankingMonth()
+    {
+        $month = Games::select(DB::raw('MONTH(date_match) month'))
+                    ->groupBy('month')
+                    ->orderBy('id','desc')
+                    ->first();
+        $month = $month->month;
+
+        $stats = Boxscore::select(
+            'player_id',
+            DB::raw('count(team) as gp'),
+            DB::raw('SUM(pts) as pts'),
+            DB::raw('SUM(ast) as ast'),
+            DB::raw('SUM(stl) as stl'),
+            DB::raw('SUM(blk) as blk'),
+            DB::raw('SUM(turnover) as turnover'),
+            DB::raw('(SUM(oreb)+SUM(dreb)) as reb'),
+            DB::raw('(SUM(pts) + (SUM(oreb)+SUM(dreb)) + SUM(ast) + SUM(stl) + SUM(blk))-(((SUM(fg2a)+SUM(fg3a)) - (SUM(fg3m)+SUM(fg2m))) + (SUM(fta) - SUM(ftm)) + (SUM(turnover))) as eff')
+        );
+
+        $filter = Session::get('filterRankingMonth');
+        $month = isset($filter['month']) ? $filter['month']: $month;
+
+        if(isset($filter)){
+            $position = $filter['filter'];
+            $stats = $stats->leftJoin('players','players.id','=','boxscore.player_id')
+                ->where('players.position','like',"%$position%");
+        }
+
+        $stats = $stats->leftJoin('games','games.id','=','boxscore.game_id')
+            ->where(DB::raw('MONTH(games.date_match)'),($month))
+            ->orderBy('eff','desc')
+            ->groupBy('player_id')
+            ->limit(15)
+            ->get();
+        return view('guest.rankingmonth',[
+            'title' => 'TOP 15 Players: Month',
+            'data' => $stats,
+            'filter' => $filter['filter'],
+            'month' => $month
         ]);
     }
 
