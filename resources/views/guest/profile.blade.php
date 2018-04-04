@@ -59,6 +59,69 @@
                 </div>
             </div>
 
+            <?php
+                $months = \App\Games::select(
+                    DB::raw('MONTH(date_match) month'),
+                    DB::raw("DATE_FORMAT(date_match,'%M') as month_name")
+                )
+                    ->groupBy('month')
+                    ->orderBy('id','asc')
+                    ->get();
+                $fg = 0;
+            ?>
+            <div class="box box-success">
+                <div class="box-header with-border">
+                    <h4>Monthly Stats</h4>
+                </div>
+                <div class="box-body">
+                    <div class="table-responsive">
+                        <table class="table table-stats table-striped table-hover">
+                            <tr class="bg-black">
+                                <th></th>
+                                <th>WIN%</th>
+                                <th>GP</th>
+                                <th>FGM-FGA</th>
+                                <th>FG%</th>
+                                <th>3PM-3PA</th>
+                                <th>3P%</th>
+                                <th>FTM-FTA</th>
+                                <th>FT%</th>
+                                <th>APG</th>
+                                <th>RPG</th>
+                                <th>BLKPG</th>
+                                <th>STLPG</th>
+                                <th>PFPG</th>
+                                <th>TOPG</th>
+                                <th>PPG</th>
+                            </tr>
+                            @foreach($months as $row)
+                            <?php
+                                $month = \App\Http\Controllers\ParamCtrl::getPlayerStatsByMonth($row->month,$player_id);
+                            ?>
+                            <tr>
+                                <th>{{ $row->month_name }}</th>
+                                <th>{{ number_format($month->win*100,1) }}%</th>
+                                <th>{{ $month->gp }}</th>
+                                <th>{{ number_format($month->fgm,1) }}-{{ number_format($month->fga,1) }}</th>
+                                <th>{{ number_format($month->fg_per*100,1) }}%</th>
+                                <th>{{ number_format($month->fg3m,1) }}-{{ number_format($month->fg3a,1) }}</th>
+                                <th>{{ number_format($month->fg3_per*100,1) }}%</th>
+                                <th>{{ number_format($month->ftm,1) }}-{{ number_format($month->fta,1) }}</th>
+                                <th>{{ number_format($month->ft_per*100,1) }}%</th>
+                                <th>{{ number_format($month->ast,1) }}</th>
+                                <th>{{ number_format($month->reb,1) }}</th>
+                                <th>{{ number_format($month->blk,1) }}</th>
+                                <th>{{ number_format($month->stl,1) }}</th>
+                                <th>{{ number_format($month->pf,1) }}</th>
+                                <th>{{ number_format($month->turnover,1) }}</th>
+                                <th>{{ number_format($month->pts,1) }}</th>
+                            </tr>
+                            @endforeach
+                        </table>
+                    </div>
+                </div>
+            </div>
+
             <div class="box box-success">
                 <div class="box-header with-border">
                     <h4>Game Log</h4>

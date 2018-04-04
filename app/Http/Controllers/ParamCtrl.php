@@ -215,6 +215,35 @@ class ParamCtrl extends Controller
         );
     }
 
+    static function getPlayerStatsByMonth($month_no,$player_id)
+    {
+        $stats = Boxscore::select(
+            DB::raw('count(team) as gp'),
+            DB::raw('SUM(win)/count(team) as win'),
+            DB::raw('(SUM(fg2m) + SUM(fg3m))/count(team) as fgm'),
+            DB::raw('(SUM(fg2a) + SUM(fg3a))/count(team) as fga'),
+            DB::raw('(SUM(fg2m) + SUM(fg3m))/(SUM(fg2a) + SUM(fg3a)) as fg_per'),
+            DB::raw('SUM(fg3m)/count(team) as fg3m'),
+            DB::raw('SUM(fg3a)/count(team) as fg3a'),
+            DB::raw('(SUM(fg3m))/(SUM(fg3a)) as fg3_per'),
+            DB::raw('SUM(ftm)/count(team) as ftm'),
+            DB::raw('SUM(fta)/count(team) as fta'),
+            DB::raw('(SUM(ftm))/(SUM(fta)) as ft_per'),
+            DB::raw('SUM(ast)/count(team) as ast'),
+            DB::raw('((SUM(oreb)+SUM(dreb)))/count(team) as reb'),
+            DB::raw('SUM(stl)/count(team) as stl'),
+            DB::raw('SUM(blk)/count(team) as blk'),
+            DB::raw('SUM(pf)/count(team) as pf'),
+            DB::raw('SUM(turnover)/count(team) as turnover'),
+            DB::raw('SUM(pts)/count(team) as pts')
+        )
+            ->leftJoin('games','games.id','=','boxscore.game_id')
+            ->where(DB::raw('MONTH(games.date_match)'),$month_no)
+            ->where('boxscore.player_id',$player_id)
+            ->first();
+        return $stats;
+    }
+
     static function getMonthPlayerByMonth($date,$player_id)
     {
         $month = (int) date('m',strtotime($date));

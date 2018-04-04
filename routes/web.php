@@ -90,5 +90,6 @@ Route::get('game/score/{game_id}/{team}','GameCtrl@getScore');
 Route::get('pictures/{folder}/{file}','ParamCtrl@pictures');
 
 Route::get('sample',function(){
-    echo $week = date('W',strtotime('2018-04-02'));
+    $data = \App\Http\Controllers\ParamCtrl::getPlayerStatsByMonth('3',25);
+    print_r($data);
 });
