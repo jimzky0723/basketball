@@ -156,6 +156,7 @@ class HomeCtrl extends Controller
         }
 
         $stats = $stats
+            ->havingRaw("COUNT(team) > 3")
             ->orderBy('eff','desc')
             ->groupBy('player_id')
             ->limit(30)
@@ -304,7 +305,8 @@ class HomeCtrl extends Controller
                     DB::raw('((SUM(oreb)+SUM(dreb)))/count(team) as reb')
                 )
                 ->leftJoin('players','players.id','=','boxscore.player_id')
-                ->where('players.position','like',"%$filter%");
+                ->where('players.position','like',"%$filter%")
+                ->havingRaw("COUNT(team) > 3");
 
         $title = 'Points Per Game Statistics';
         $col = 'pts';
