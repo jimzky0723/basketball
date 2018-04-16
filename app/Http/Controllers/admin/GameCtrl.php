@@ -7,6 +7,7 @@ use App\Boxscore;
 use App\News;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class GameCtrl extends Controller
 {
@@ -282,5 +283,101 @@ class GameCtrl extends Controller
         return view('guest.scoreboard',[
             'game' => $game
         ]);
+    }
+
+    public function randomPlayer(Request $req)
+    {
+        $players = $req->players;
+
+//        $stats = Boxscore::select(
+//            'player_id',
+//            DB::raw('(SUM(pts) + (SUM(oreb)+SUM(dreb)) + SUM(ast) + SUM(stl) + SUM(blk))-(((SUM(fg2a)+SUM(fg3a)) - (SUM(fg3m)+SUM(fg2m))) + (SUM(fta) - SUM(ftm)) + (SUM(turnover))) as eff')
+//        )
+//            ->whereIn('player_id',$players)
+//            ->groupBy('player_id')
+//            ->orderBy('eff','desc')
+//            ->get();
+//        $data = array();
+//        foreach($stats as $row){
+//            $data[] = $row->player_id;
+//        }
+//
+//        for($i=0;$i<10;$i++){
+//            $team = $req->away_team;
+//            if($i==0 || $i==3 || $i==4 || $i==6 || $i==9){
+//                $team = $req->home_team;
+//            }
+//            $group = array(
+//                'game_id' => $req->game_id,
+//                'team' => $team,
+//                'player_id' => $data[$i]
+//            );
+//            Boxscore::create($group);
+//
+//        }
+//
+//        return redirect()->back()->with('status','team_created');
+        print_r($players);
+        $data = array();
+        $rebs = self::rank('reb',4,$players);
+        foreach($rebs as $r)
+        {
+            $data[] = $r->player_id;
+            if (($key = array_search($r->player_id, $players)) !== false) {
+                unset($players[$key]);
+            }
+        }
+
+        $ast = self::rank('ast',2,$players);
+        foreach($ast as $a)
+        {
+            $data[] = $a->player_id;
+            if (($key = array_search($a->player_id, $players)) !== false) {
+                unset($players[$key]);
+            }
+        }
+
+        $pts = self::rank('pts',4,$players);
+        foreach($pts as $p)
+        {
+            $data[] = $p->player_id;
+            if (($key = array_search($p->player_id, $players)) !== false) {
+                unset($players[$key]);
+            }
+        }
+
+        for($i=0;$i<10;$i++){
+            $team = $req->away_team;
+            if($i==0 || $i==3 || $i==4 || $i==6 || $i==9){
+                $team = $req->home_team;
+            }
+            $group = array(
+                'game_id' => $req->game_id,
+                'team' => $team,
+                'player_id' => $data[$i]
+            );
+            Boxscore::create($group);
+
+        }
+        return redirect()->back()->with('status','team_created');
+    }
+
+    public function rank($stat,$limit,$players)
+    {
+        $stats = Boxscore::select(
+                'player_id',
+                DB::raw('SUM(pts)/count(team) as pts'),
+                DB::raw('SUM(ast)/count(team) as ast'),
+                DB::raw('SUM(stl)/count(team) as stl'),
+                DB::raw('SUM(blk)/count(team) as blk'),
+                DB::raw('((SUM(oreb)+SUM(dreb)))/count(team) as reb'),
+                DB::raw('(SUM(pts) + (SUM(oreb)+SUM(dreb)) + SUM(ast) + SUM(stl) + SUM(blk))-(((SUM(fg2a)+SUM(fg3a)) - (SUM(fg3m)+SUM(fg2m))) + (SUM(fta) - SUM(ftm)) + (SUM(turnover))) as eff')
+            )
+            ->whereIn('player_id',$players)
+            ->groupBy('player_id')
+            ->orderBy($stat,'desc')
+            ->limit($limit)
+            ->get();
+        return $stats;
     }
 }

@@ -151,6 +151,9 @@
                 <button data-toggle="modal" data-target="#deleteModal" class="btn btn-flat btn-danger">
                     <i class="fa fa-trash"></i> Delete Game
                 </button>
+                <button data-toggle="modal" data-target="#playerListModal" class="btn btn-flat btn-info">
+                    <i class="fa fa-users"></i> Generate Team
+                </button>
                 <a href="{{ url('admin/games/boxscore/'.$data->id) }}" class="btn btn-success btn-flat">
                     <i class="fa fa-send"></i> Start Game
                 </a>
@@ -173,6 +176,31 @@
 
 @section('js')
 <script>
+    var count=0;
+    $('.count_players').change(function(){
+        var c = this.checked ? 1 : -1;
+        count += c;
+        if(count>=10){
+            $('.count_players').attr('disabled',true);
+            $('.count_players:checked').attr('disabled',false);
+        }else{
+            $('.count_players').attr('disabled',false);
+        }
+        $('.count_players').html(count);
+    });
+
+    $('#randomPlayers').on('submit',function(e){
+        if(count!=10){
+            alert('Select 10 Players');
+            e.preventDefault();
+        }
+    });
+
+    function countCheck()
+    {
+        var count = $("input[name='players[]']:checked").length;
+    }
+
     function filterName()
     {
         // Declare variables

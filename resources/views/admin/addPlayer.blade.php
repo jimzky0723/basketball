@@ -173,6 +173,10 @@
 
                                         </td>
                                     </tr>
+                                    <tr class="has-group">
+                                        <td>Date :</td>
+                                        <td><input type="date" value="{{ date('Y-m-d') }}" name="date_registered" class="form-control" /></td>
+                                    </tr>
 
                                     <tr>
                                         <td></td>

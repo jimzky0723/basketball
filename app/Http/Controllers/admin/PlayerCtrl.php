@@ -76,7 +76,7 @@ class PlayerCtrl extends Controller
         $match = array('unique_id' => $unique);
         $date_expired = '0000-00-00';
         if($req->status==1 && $req->payment){
-            $date_expired = date('Y-m-d',strtotime("+6 month"));
+            $date_expired = date('Y-m-d',strtotime($req->date_registered . "+6 month"));
         }
         Players::updateOrCreate($match,
             [
@@ -183,7 +183,7 @@ class PlayerCtrl extends Controller
 
         $date_expired = '0000-00-00';
         if($req->status==1 && $req->payment){
-            $date_expired = date('Y-m-d',strtotime("+6 month"));
+            $date_expired = date('Y-m-d',strtotime($req->date_registered ."+6 month"));
             Players::updateOrCreate($match,[
                 'date_expired' => $date_expired
             ]);

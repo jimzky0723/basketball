@@ -71,6 +71,7 @@ Route::get('admin/games/start/{game_id}/{team}','admin\GameCtrl@startGame');
 
 Route::post('admin/games/store','admin\GameCtrl@store');
 Route::post('admin/games/assign','admin\GameCtrl@assignPlayer');
+Route::post('admin/games/random','admin\GameCtrl@randomPlayer');
 Route::get('admin/games/destroy/{game_id}','admin\GameCtrl@destroy');
 
 Route::get('admin/committee','admin\CommCtrl@index');
@@ -90,6 +91,5 @@ Route::get('game/score/{game_id}/{team}','GameCtrl@getScore');
 Route::get('pictures/{folder}/{file}','ParamCtrl@pictures');
 
 Route::get('sample',function(){
-    $data = \App\Http\Controllers\ParamCtrl::getPlayerStatsByMonth('3',25);
-    print_r($data);
+    echo date('Y-m-d',strtotime('2018-04-16' . "+6 month"));
 });
