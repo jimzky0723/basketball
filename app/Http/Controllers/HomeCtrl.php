@@ -331,6 +331,7 @@ class HomeCtrl extends Controller
         }else if($sort=='3-fieldgoal'){
             $title = '3-Point Field Goals %';
             $col = 'fg3_per';
+            $data = $data->where('fg3a','>',0);
         }else if($sort=='freethrow'){
             $title = 'Free-Throw Shooting Statistics';
             $col = 'ft_per';
