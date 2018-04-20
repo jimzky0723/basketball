@@ -3,7 +3,8 @@
 @section('content')
     <?php
     $status = session('status');
-    $list = \App\Players::orderBy('lname','asc')->get();
+    $list = \App\Players::where('status',1)
+        ->orderBy('lname','asc')->get();
     ?>
 
     <div class="col-md-6">
@@ -202,6 +203,28 @@
     }
 
     function filterName()
+    {
+        // Declare variables
+        var input, filter, ul, li, a, i;
+        input = document.getElementById('group_search');
+        filter = input.value.toUpperCase();
+        ul = document.getElementById("group_div");
+        li = ul.getElementsByTagName("li");
+
+        // Loop through all list items, and hide those who don't match the search query
+        for (i = 0; i < li.length; i++) {
+            //a = li[i].getElementsByTagName("a")[0];
+            a = li[i].innerHTML;
+            if (a.toUpperCase().indexOf(filter) > -1) {
+                li[i].style.display = "";
+            } else {
+                li[i].style.display = "none";
+            }
+        }
+        return li.length;
+    }
+
+    function filterNameHome()
     {
         // Declare variables
         var input, filter, ul, li, a, i;

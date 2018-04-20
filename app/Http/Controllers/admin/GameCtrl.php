@@ -373,8 +373,10 @@ class GameCtrl extends Controller
                 DB::raw('((SUM(oreb)+SUM(dreb)))/count(team) as reb'),
                 DB::raw('(SUM(pts) + (SUM(oreb)+SUM(dreb)) + SUM(ast) + SUM(stl) + SUM(blk))-(((SUM(fg2a)+SUM(fg3a)) - (SUM(fg3m)+SUM(fg2m))) + (SUM(fta) - SUM(ftm)) + (SUM(turnover))) as eff')
             )
+            ->join('players','players.id','=','boxscore.player_id')
             ->whereIn('player_id',$players)
             ->groupBy('player_id')
+            ->orderBy('players.height','desc')
             ->orderBy($stat,'desc')
             ->limit($limit)
             ->get();

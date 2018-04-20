@@ -11,11 +11,11 @@
                     <h4>Select Players : <span class="text-success count_players">0</span> </h4>
                 </div>
                 <div class="modal-body">
-                    <input type="text" id="home_search" onkeyup="filterName()" class="form-control" placeholder="Search Name..." />
+                    <input type="text" id="group_search" onkeyup="filterName()" class="form-control" placeholder="Search Name..." />
                     <hr />
                     <div style="max-height: 400px;overflow-y: scroll">
 
-                        <ul class="list-group" id="home_div">
+                        <ul class="list-group" id="group_div">
                             @foreach($list as $row)
                                 <li class="list-group-item clearfix">
                                     <label class="">
@@ -49,7 +49,7 @@
                 </div>
                 <div class="modal-body">
                     <div style="max-height: 600px;overflow-y: scroll">
-                        <input type="text" id="home_search" onkeyup="filterName()" class="form-control" placeholder="Search Name..." />
+                        <input type="text" id="home_search" onkeyup="filterNameHome()" class="form-control" placeholder="Search Name..." />
                         <hr />
                         <ul class="list-group" id="home_div">
                             @foreach($list as $row)
