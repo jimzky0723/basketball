@@ -3,8 +3,7 @@
 @section('content')
     <?php
     $status = session('status');
-    $list = \App\Players::where('status',1)
-        ->orderBy('lname','asc')->get();
+    $list = \App\Players::orderBy('lname','asc')->get();
     ?>
 
     <div class="col-md-6">

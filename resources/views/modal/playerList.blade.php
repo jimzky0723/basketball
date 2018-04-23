@@ -17,9 +17,15 @@
 
                         <ul class="list-group" id="group_div">
                             @foreach($list as $row)
+                                <?php
+                                    $status = 'text-muted';
+                                    if($row->status==1){
+                                        $status = 'title-info';
+                                    }
+                                ?>
                                 <li class="list-group-item clearfix">
                                     <label class="">
-                                        <input type="checkbox" class="count_players" value="{{ $row->id }}" name="players[]"> <span class="title-info">{{ $row->lname }}, {{ $row->fname }}</span>,
+                                        <input type="checkbox" class="count_players" value="{{ $row->id }}" name="players[]"> <span class="{{ $status }}">{{ $row->lname }}, {{ $row->fname }}</span>,
                                         <span class="text-primary">{{ $row->position }} </span> | {{ $row->jersey }}
                                     </label>
                                 </li>
@@ -53,9 +59,15 @@
                         <hr />
                         <ul class="list-group" id="home_div">
                             @foreach($list as $row)
+                            <?php
+                            $status = 'text-muted';
+                            if($row->status==1){
+                                $status = 'title-info';
+                            }
+                            ?>
                             <li class="list-group-item clearfix">
                                 <label class="">
-                                    <input type="checkbox" value="{{ $row->id }}" name="players[]"> <span class="title-info">{{ $row->lname }}, {{ $row->fname }}</span>,
+                                    <input type="checkbox" value="{{ $row->id }}" name="players[]"> <span class="{{ $status }}">{{ $row->lname }}, {{ $row->fname }}</span>,
                                     <span class="text-primary">{{ $row->position }} </span> | {{ $row->jersey }}
                                 </label>
                             </li>
@@ -89,9 +101,15 @@
                         <hr />
                         <ul class="list-group" id="away_div">
                             @foreach($list as $row)
+                                <?php
+                                $status = 'text-muted';
+                                if($row->status==1){
+                                    $status = 'title-info';
+                                }
+                                ?>
                                 <li class="list-group-item clearfix">
                                     <label>
-                                        <input type="checkbox" value="{{ $row->id }}" name="players[]"> <span class="title-info">{{ $row->lname }}, {{ $row->fname }}</span>,
+                                        <input type="checkbox" value="{{ $row->id }}" name="players[]"> <span class="{{ $status }}">{{ $row->lname }}, {{ $row->fname }}</span>,
                                         <span class="text-primary">{{ $row->position }} </span> | {{ $row->jersey }}
                                     </label>
                                 </li>
