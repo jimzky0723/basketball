@@ -235,7 +235,6 @@ class HomeCtrl extends Controller
         }
 
         $stats = $stats->leftJoin('games','games.id','=','boxscore.game_id')
-            ->havingRaw("COUNT(team) > 6")
             ->where(DB::raw('WEEK(games.date_match)'),($week))
             ->orderBy('eff','desc')
             ->groupBy('player_id')
@@ -304,7 +303,7 @@ class HomeCtrl extends Controller
         }
 
         $stats = $stats->leftJoin('games','games.id','=','boxscore.game_id')
-            ->havingRaw("COUNT(team) > 6")
+            ->havingRaw("COUNT(team) > 3")
             ->where(DB::raw('MONTH(games.date_match)'),($month))
             ->orderBy('eff','desc')
             ->groupBy('player_id')
