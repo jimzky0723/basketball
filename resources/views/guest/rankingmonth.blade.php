@@ -82,13 +82,13 @@
                                         <span class="text-muted">{{ $player->position }}</span>
                                     </td>
                                     <td>{{ $row->gp }}</td>
-                                    <td>{{ $row->pts }}</td>
-                                    <td>{{ $row->ast }}</td>
-                                    <td>{{ $row->reb }}</td>
-                                    <td>{{ $row->stl }}</td>
-                                    <td>{{ $row->blk }}</td>
-                                    <td>{{ $row->turnover }}</td>
-                                    <td>{{ ($row->eff>0) ? '+':'' }}{{ $row->eff }}</td>
+                                    <td>{{ number_format($row->pts,1) }}</td>
+                                    <td>{{ number_format($row->ast,1) }}</td>
+                                    <td>{{ number_format($row->reb,1) }}</td>
+                                    <td>{{ number_format($row->stl,1) }}</td>
+                                    <td>{{ number_format($row->blk,1) }}</td>
+                                    <td>{{ number_format($row->turnover,1) }}</td>
+                                    <td>{{ ($row->eff>0) ? '+':'' }}{{ number_format($row->eff,1) }}</td>
                                 </tr>
                             @endforeach
                         </table>

@@ -94,7 +94,7 @@ class HomeCtrl extends Controller
                 ->leftJoin('boxscore','boxscore.game_id','=','games.id')
                 ->where('boxscore.player_id',$player_id)
                 ->where('games.winner','!=','')
-                ->orderBy('date_match','desc')
+                ->orderBy('id','desc')
                 ->limit(10)
                 ->get();
 
@@ -140,13 +140,27 @@ class HomeCtrl extends Controller
         $stats = Boxscore::select(
             'player_id',
             DB::raw('count(team) as gp'),
-            DB::raw('SUM(pts) as pts'),
-            DB::raw('SUM(ast) as ast'),
-            DB::raw('SUM(stl) as stl'),
-            DB::raw('SUM(blk) as blk'),
-            DB::raw('SUM(turnover) as turnover'),
-            DB::raw('(SUM(oreb)+SUM(dreb)) as reb'),
-            DB::raw('(SUM(pts) + (SUM(oreb)+SUM(dreb)) + SUM(ast) + SUM(stl) + SUM(blk))-(((SUM(fg2a)+SUM(fg3a)) - (SUM(fg3m)+SUM(fg2m))) + (SUM(fta) - SUM(ftm)) + (SUM(turnover))) as eff')
+            DB::raw('SUM(pts)/count(team) as pts'),
+            DB::raw('SUM(ast)/count(team) as ast'),
+            DB::raw('SUM(stl)/count(team) as stl'),
+            DB::raw('SUM(blk)/count(team) as blk'),
+            DB::raw('SUM(turnover)/count(team) as turnover'),
+            DB::raw('(SUM(oreb)+SUM(dreb))/count(team) as reb'),
+            DB::raw('
+            (
+            (SUM(pts)/count(team)) + 
+            ((SUM(oreb)+SUM(dreb))/count(team)) + 
+            (SUM(ast)/count(team)) + 
+            ((SUM(stl)*2)/count(team)) + 
+            ((SUM(blk))*2)/count(team))-
+            (
+            (((SUM(fg2a)/count(team))+(SUM(fg3a)/count(team))) - 
+            ((SUM(fg3m)/count(team))+(SUM(fg2m)/count(team)))) + 
+            ((SUM(fta)/count(team)) - (SUM(ftm)/count(team))) + 
+            ((SUM(turnover)*2)/count(team)) + 
+            ((SUM(pf))/count(team))
+            ) 
+            as eff')
         );
 
         $filter = Session::get('filterRanking');
@@ -189,13 +203,27 @@ class HomeCtrl extends Controller
         $stats = Boxscore::select(
             'player_id',
             DB::raw('count(team) as gp'),
-            DB::raw('SUM(pts) as pts'),
-            DB::raw('SUM(ast) as ast'),
-            DB::raw('SUM(stl) as stl'),
-            DB::raw('SUM(blk) as blk'),
-            DB::raw('SUM(turnover) as turnover'),
-            DB::raw('(SUM(oreb)+SUM(dreb)) as reb'),
-            DB::raw('(SUM(pts) + (SUM(oreb)+SUM(dreb)) + SUM(ast) + SUM(stl) + SUM(blk))-(((SUM(fg2a)+SUM(fg3a)) - (SUM(fg3m)+SUM(fg2m))) + (SUM(fta) - SUM(ftm)) + (SUM(turnover))) as eff')
+            DB::raw('SUM(pts)/count(team) as pts'),
+            DB::raw('SUM(ast)/count(team) as ast'),
+            DB::raw('SUM(stl)/count(team) as stl'),
+            DB::raw('SUM(blk)/count(team) as blk'),
+            DB::raw('SUM(turnover)/count(team) as turnover'),
+            DB::raw('(SUM(oreb)+SUM(dreb))/count(team) as reb'),
+            DB::raw('
+            (
+            (SUM(pts)/count(team)) + 
+            ((SUM(oreb)+SUM(dreb))/count(team)) + 
+            (SUM(ast)/count(team)) + 
+            ((SUM(stl)*2)/count(team)) + 
+            ((SUM(blk))*2)/count(team))-
+            (
+            (((SUM(fg2a)/count(team))+(SUM(fg3a)/count(team))) - 
+            ((SUM(fg3m)/count(team))+(SUM(fg2m)/count(team)))) + 
+            ((SUM(fta)/count(team)) - (SUM(ftm)/count(team))) + 
+            ((SUM(turnover)*2)/count(team)) + 
+            ((SUM(pf))/count(team))
+            ) 
+            as eff')
         );
 
         $filter = Session::get('filterRankingWeek');
@@ -242,13 +270,27 @@ class HomeCtrl extends Controller
         $stats = Boxscore::select(
             'player_id',
             DB::raw('count(team) as gp'),
-            DB::raw('SUM(pts) as pts'),
-            DB::raw('SUM(ast) as ast'),
-            DB::raw('SUM(stl) as stl'),
-            DB::raw('SUM(blk) as blk'),
-            DB::raw('SUM(turnover) as turnover'),
-            DB::raw('(SUM(oreb)+SUM(dreb)) as reb'),
-            DB::raw('(SUM(pts) + (SUM(oreb)+SUM(dreb)) + SUM(ast) + SUM(stl) + SUM(blk))-(((SUM(fg2a)+SUM(fg3a)) - (SUM(fg3m)+SUM(fg2m))) + (SUM(fta) - SUM(ftm)) + (SUM(turnover))) as eff')
+            DB::raw('SUM(pts)/count(team) as pts'),
+            DB::raw('SUM(ast)/count(team) as ast'),
+            DB::raw('SUM(stl)/count(team) as stl'),
+            DB::raw('SUM(blk)/count(team) as blk'),
+            DB::raw('SUM(turnover)/count(team) as turnover'),
+            DB::raw('(SUM(oreb)+SUM(dreb))/count(team) as reb'),
+            DB::raw('
+            (
+            (SUM(pts)/count(team)) + 
+            ((SUM(oreb)+SUM(dreb))/count(team)) + 
+            (SUM(ast)/count(team)) + 
+            ((SUM(stl)*2)/count(team)) + 
+            ((SUM(blk))*2)/count(team))-
+            (
+            (((SUM(fg2a)/count(team))+(SUM(fg3a)/count(team))) - 
+            ((SUM(fg3m)/count(team))+(SUM(fg2m)/count(team)))) + 
+            ((SUM(fta)/count(team)) - (SUM(ftm)/count(team))) + 
+            ((SUM(turnover)*2)/count(team)) + 
+            ((SUM(pf))/count(team))
+            ) 
+            as eff')
         );
 
         $filter = Session::get('filterRankingMonth');
