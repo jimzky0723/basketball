@@ -75,12 +75,34 @@ class ParamCtrl extends Controller
         $stats = Boxscore::select(
             'player_id',
             DB::raw('WEEK(games.date_match) as week'),
+//            DB::raw('SUM(pts)/count(team) as pts'),
+//            DB::raw('SUM(ast)/count(team) as ast'),
+//            DB::raw('SUM(stl)/count(team) as stl'),
+//            DB::raw('SUM(blk)/count(team) as blk'),
+//            DB::raw('((SUM(oreb)+SUM(dreb)))/count(team) as reb'),
+//            DB::raw('(SUM(pts) + (SUM(oreb)+SUM(dreb)) + SUM(ast) + (SUM(stl)*2) + (SUM(blk)*2))-(((SUM(fg2a)+SUM(fg3a)) - (SUM(fg3m)+SUM(fg2m))) + (SUM(fta) - SUM(ftm)) + ((SUM(turnover)*2))) as eff')
+            DB::raw('count(team) as gp'),
             DB::raw('SUM(pts)/count(team) as pts'),
             DB::raw('SUM(ast)/count(team) as ast'),
             DB::raw('SUM(stl)/count(team) as stl'),
             DB::raw('SUM(blk)/count(team) as blk'),
-            DB::raw('((SUM(oreb)+SUM(dreb)))/count(team) as reb'),
-            DB::raw('(SUM(pts) + (SUM(oreb)+SUM(dreb)) + SUM(ast) + (SUM(stl)*2) + (SUM(blk)*2))-(((SUM(fg2a)+SUM(fg3a)) - (SUM(fg3m)+SUM(fg2m))) + (SUM(fta) - SUM(ftm)) + ((SUM(turnover)*2))) as eff')
+            DB::raw('SUM(turnover)/count(team) as turnover'),
+            DB::raw('(SUM(oreb)+SUM(dreb))/count(team) as reb'),
+            DB::raw('
+            (
+            (SUM(pts)/count(team)) + 
+            ((SUM(oreb)+SUM(dreb))/count(team)) + 
+            (SUM(ast)/count(team)) + 
+            ((SUM(stl)*2)/count(team)) + 
+            ((SUM(blk))*2)/count(team))-
+            (
+            (((SUM(fg2a)/count(team))+(SUM(fg3a)/count(team))) - 
+            ((SUM(fg3m)/count(team))+(SUM(fg2m)/count(team)))) + 
+            ((SUM(fta)/count(team)) - (SUM(ftm)/count(team))) + 
+            ((SUM(turnover)*2)/count(team)) + 
+            ((SUM(pf))/count(team))
+            ) 
+            as eff')
         )
             ->leftJoin('games','games.id','=','boxscore.game_id')
             ->where(DB::raw('WEEK(games.date_match)'),($week-1))
@@ -175,8 +197,23 @@ class ParamCtrl extends Controller
             DB::raw('SUM(ast)/count(team) as ast'),
             DB::raw('SUM(stl)/count(team) as stl'),
             DB::raw('SUM(blk)/count(team) as blk'),
-            DB::raw('((SUM(oreb)+SUM(dreb)))/count(team) as reb'),
-            DB::raw('(SUM(pts) + (SUM(oreb)+SUM(dreb)) + SUM(ast) + (SUM(stl)*2) + (SUM(blk)*2))-(((SUM(fg2a)+SUM(fg3a)) - (SUM(fg3m)+SUM(fg2m))) + (SUM(fta) - SUM(ftm)) + ((SUM(turnover)*2))) as eff')
+            DB::raw('SUM(turnover)/count(team) as turnover'),
+            DB::raw('(SUM(oreb)+SUM(dreb))/count(team) as reb'),
+            DB::raw('
+            (
+            (SUM(pts)/count(team)) + 
+            ((SUM(oreb)+SUM(dreb))/count(team)) + 
+            (SUM(ast)/count(team)) + 
+            ((SUM(stl)*2)/count(team)) + 
+            ((SUM(blk))*2)/count(team))-
+            (
+            (((SUM(fg2a)/count(team))+(SUM(fg3a)/count(team))) - 
+            ((SUM(fg3m)/count(team))+(SUM(fg2m)/count(team)))) + 
+            ((SUM(fta)/count(team)) - (SUM(ftm)/count(team))) + 
+            ((SUM(turnover)*2)/count(team)) + 
+            ((SUM(pf))/count(team))
+            ) 
+            as eff')
         )
             ->leftJoin('games','games.id','=','boxscore.game_id')
             ->where(DB::raw('MONTH(games.date_match)'),$month)
